@@ -2,7 +2,7 @@
 import os.path
 import tkinter as tk
 from PIL import Image, ImageTk
-from device import Device
+# from device import Device
 
 class Object:
     def __init__(self, root, set_position_x, set_position_y, delta_x):

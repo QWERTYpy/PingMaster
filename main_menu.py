@@ -2,7 +2,7 @@
 import os.path
 import tkinter as tk
 from PIL import Image, ImageTk
-from device import Device
+# from device import Device
 
 class MainMenu:
     def __init__(self, root, info):
@@ -10,9 +10,11 @@ class MainMenu:
         # Создаем меню
         self.main_menu = tk.Menu(root)
         root.config(menu=self.main_menu)
-        self.main_menu.add_command(label="Сохранить", command=self.save_onject)
+        self.main_menu.add_command(label="Сохранить", command=self.save_object)
+        self.main_menu.add_command(label="Удалить", command=self.del_object)
 
-    def save_onject(self):
+
+    def save_object(self):
         # # if os.path.exists("ip_config.ini"):
         # config = configparser.ConfigParser()
         # for _ in self.dict_device.keys():
@@ -21,3 +23,6 @@ class MainMenu:
 
         # self.title_left_down_text.set("Сохранено")
         self.info.title_left_down_text.set("Сохранено")
+
+    def del_object(self):
+        self.info.title_left_down_text.set("Удалено")

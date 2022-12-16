@@ -2,7 +2,7 @@
 import os.path
 import tkinter as tk
 from PIL import Image, ImageTk
-from device import Device
+# from device import Device
 from object import Object
 from main_menu import MainMenu
 
@@ -12,7 +12,7 @@ class MainFrame(tk.Frame):
         self.main_window_w = map_width
         self.delta = 2  # Коэффициент увеличения
         self.delta_x = 1  # Текущая кратность
-        self.dict_object = dict_object
+        self.dict_object = dict_object  # Словарь с созданными объектами
         self.load_map(map_width, map_height)
 
 
@@ -118,21 +118,10 @@ class MainFrame(tk.Frame):
         # Преобразуем координаты окна в координаты канвы
         self.set_position_x = self.main_canvas.canvasx(self.position_cursor_old_x)
         self.set_position_y = self.main_canvas.canvasy(self.position_cursor_old_y)
-        # print(self.set_position_x, self.position_cursor_old_x)
-        # print(di)
-        # print(x,y)
-        # Создаем новое устройство и сохраняем
+
         new_device = Object(self.main_canvas, self.set_position_x, self.set_position_y, self.delta_x)
         self.dict_object[new_device.oval] = new_device
         print(self.dict_object)
-        # # Создаем точку и назначаем для нее действия
-        # self.oval = self.main_canvas.create_oval((x - 1) * self.delta_x, (y - 1) * self.delta_x, (x + 1) * self.delta_x,
-        #                                          (y + 1) * self.delta_x, fill='red')
-        # self.dict_device[f"{self.oval}"] = Device()
-        # self.dict_device[f"{self.oval}"].set(x, y)
-        # self.main_canvas.tag_bind(self.oval, "<Button-1>",
-        #                           lambda event, element=self.oval: self.name_obj(event, element))
-        # self.main_canvas.tag_bind(self.oval, "<Button-3>",
-        #                           lambda event, element=self.oval: self.right_button_click(event, element))
+
 
 
