@@ -5,10 +5,12 @@ from PIL import Image, ImageTk
 # from device import Device
 from object import Object
 from main_menu import MainMenu
+from description import Descr
 
 class MainFrame(tk.Frame):
     def __init__(self, root, map_width, map_height, dict_object):
         super().__init__(root)
+        self.root = root
         self.main_window_w = map_width
         self.delta = 2  # Коэффициент увеличения
         self.delta_x = 1  # Текущая кратность
@@ -115,13 +117,23 @@ class MainFrame(tk.Frame):
         :return:
         """
         print("Создание")
+
         # Преобразуем координаты окна в координаты канвы
         self.set_position_x = self.main_canvas.canvasx(self.position_cursor_old_x)
         self.set_position_y = self.main_canvas.canvasy(self.position_cursor_old_y)
+        descr = Descr(self.root)
+        _, x, y = self.root.geometry().split('+')
+        descr.geometry(f"200x180+{self.position_cursor_old_x+int(x)+10}+{self.position_cursor_old_y+int(y)}")
+        descr.grab_set()
+        descr.wait_window()
+        # print(descr.button)
 
-        new_device = Object(self.main_canvas, self.set_position_x, self.set_position_y, self.delta_x)
-        self.dict_object[new_device.oval] = new_device
-        print(self.dict_object)
+        if descr.button:
+            new_device = Object(self.main_canvas, self.set_position_x, self.set_position_y, self.delta_x)
+            new_device.ip_adr = descr.ip_adr
+            new_device.descr = descr.descr
+            self.dict_object[new_device.oval] = new_device
+            # print(self.dict_object[new_device.oval].ip_adr, self.dict_object[new_device.oval].descr)
 
 
 

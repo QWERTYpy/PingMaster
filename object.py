@@ -6,6 +6,8 @@ from PIL import Image, ImageTk
 
 class Object:
     def __init__(self, root, set_position_x, set_position_y, delta_x):
+        self.ip_adr = ""
+        self.descr = ""
         # Создание нового объекта и назначение ему обработчиков
         self.root = root
         self.x = round(set_position_x / delta_x, 0)
