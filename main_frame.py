@@ -6,15 +6,17 @@ from PIL import Image, ImageTk
 from object import Object
 from main_menu import MainMenu
 from description import Descr
+import saveload as sl
 
 class MainFrame(tk.Frame):
-    def __init__(self, root, map_width, map_height, dict_object):
+    def __init__(self, root, map_width, map_height, dict_object, del_object):
         super().__init__(root)
         self.root = root
         self.main_window_w = map_width
         self.delta = 2  # Коэффициент увеличения
         self.delta_x = 1  # Текущая кратность
         self.dict_object = dict_object  # Словарь с созданными объектами
+        self.del_object = del_object
         self.load_map(map_width, map_height)
 
 
@@ -47,6 +49,12 @@ class MainFrame(tk.Frame):
         self.main_images_pi = ImageTk.PhotoImage(self.main_images_copy)
         self.main_canvas.create_image(0, 0, anchor='nw', image=self.main_images_pi)  # Размещаем
         self.main_canvas.place(x=0, y=0)
+        # ----
+        for _ in sl.load_ini():
+            new_device = Object(self.main_canvas, int(float(_[1])), int(float(_[2])), self.delta_x, self.del_object)
+            new_device.ip_adr = _[0]
+            new_device.descr = _[3]
+            self.dict_object[new_device.oval] = new_device
         # Задаем реакции
         self.main_canvas.bind("<MouseWheel>", self.mousewheel)
         self.main_canvas.bind("<Button-3>", self.right_button_click)
@@ -88,6 +96,8 @@ class MainFrame(tk.Frame):
         # Поднимаем все объекты над канвой
         for _ in self.dict_object.keys():
             self.main_canvas.tag_raise(_)
+        for _ in self.del_object.keys():
+            self.main_canvas.tag_raise(self.del_object[_])
         # print(self.main_canvas.find_all())
 
     def right_button_click(self, event, element = None):
@@ -129,7 +139,7 @@ class MainFrame(tk.Frame):
         # print(descr.button)
 
         if descr.button:
-            new_device = Object(self.main_canvas, self.set_position_x, self.set_position_y, self.delta_x)
+            new_device = Object(self.main_canvas, self.set_position_x, self.set_position_y, self.delta_x, self.del_object)
             new_device.ip_adr = descr.ip_adr
             new_device.descr = descr.descr
             self.dict_object[new_device.oval] = new_device

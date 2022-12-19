@@ -5,11 +5,13 @@ from PIL import Image, ImageTk
 # from device import Device
 
 class Object:
-    def __init__(self, root, set_position_x, set_position_y, delta_x):
+    def __init__(self, root, set_position_x, set_position_y, delta_x, del_object):
         self.ip_adr = ""
         self.descr = ""
+        self.rect = ""
         # Создание нового объекта и назначение ему обработчиков
         self.root = root
+        self.del_object = del_object
         self.x = round(set_position_x / delta_x, 0)
         self.y = round(set_position_y / delta_x, 0)
 
@@ -25,11 +27,22 @@ class Object:
         # print(element)
         # self.main_canvas.delete(element-2)
         # print(self.main_canvas.find_all()) #показывает все ID
-        print(self.root.coords(self.oval))
+        # print(self.root.coords(self.oval))
+        # print(self.root.coords(element))
+        if element in self.del_object:
+            self.root.delete(self.del_object[element])
+            self.del_object.pop(element)
+        else:
+            self.rect = self.root.create_rectangle(self.root.coords(element))
+            self.del_object[element] = self.rect
+            # print(self.rect)
 
     def resize(self, delta_x):
 
         self.tmp_x = self.x * delta_x
         self.tmp_y = self.y * delta_x
         self.root.coords(self.oval, self.tmp_x - delta_x, self.tmp_y - delta_x, self.tmp_x + delta_x, self.tmp_y + delta_x)
+        if self.rect:
+            self.root.coords(self.rect, self.tmp_x - delta_x, self.tmp_y - delta_x, self.tmp_x + delta_x,
+                             self.tmp_y + delta_x)
 
