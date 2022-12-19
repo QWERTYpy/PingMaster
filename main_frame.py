@@ -52,6 +52,9 @@ class MainFrame(tk.Frame):
         # ----
         for _ in sl.load_ini():
             new_device = Object(self.main_canvas, int(float(_[1])), int(float(_[2])), self.delta_x, self.del_object)
+            new_device.label = self.main_canvas.create_text(int(float(_[1])), int(float(_[2])), anchor='w', text=_[0])
+            self.main_canvas.tag_lower(new_device.label)
+            print(new_device.label)
             new_device.ip_adr = _[0]
             new_device.descr = _[3]
             self.dict_object[new_device.oval] = new_device
@@ -94,8 +97,13 @@ class MainFrame(tk.Frame):
         self.main_canvas.create_image(0, 0, anchor='nw', image=self.main_images_pi)
         # self.main_canvas.tag_raise(self.oval)
         # Поднимаем все объекты над канвой
+
         for _ in self.dict_object.keys():
             self.main_canvas.tag_raise(_)
+            if self.delta_x > 3:
+                self.main_canvas.tag_raise(self.dict_object[_].label)
+            else:
+                self.main_canvas.tag_lower(self.dict_object[_].label)
         for _ in self.del_object.keys():
             self.main_canvas.tag_raise(self.del_object[_])
         # print(self.main_canvas.find_all())

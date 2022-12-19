@@ -33,5 +33,5 @@ class MainMenu:
         for _ in self.del_oblect.keys():
             self.main_canvas.delete(self.del_oblect[_])
             self.main_canvas.delete(_)
-
+        self.del_oblect.clear()
         self.info.title_left_down_text.set("Удалено")

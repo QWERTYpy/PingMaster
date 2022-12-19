@@ -9,6 +9,7 @@ class Object:
         self.ip_adr = ""
         self.descr = ""
         self.rect = ""
+        self.label = ""
         # Создание нового объекта и назначение ему обработчиков
         self.root = root
         self.del_object = del_object
@@ -36,6 +37,7 @@ class Object:
             self.rect = self.root.create_rectangle(self.root.coords(element))
             self.del_object[element] = self.rect
             # print(self.rect)
+        print(self.del_object)
 
     def resize(self, delta_x):
 
@@ -45,4 +47,5 @@ class Object:
         if self.rect:
             self.root.coords(self.rect, self.tmp_x - delta_x, self.tmp_y - delta_x, self.tmp_x + delta_x,
                              self.tmp_y + delta_x)
+        self.root.coords(self.label, self.tmp_x+delta_x,self.tmp_y)
 
