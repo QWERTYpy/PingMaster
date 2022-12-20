@@ -18,7 +18,7 @@ def save_ini(dict_object):
 
 def load_ini():
     config = configparser.ConfigParser()
-    config.read('example.ini')
+    config.read('example.ini', encoding="utf-8")
     list_obj = []
     for ip_adr in config.sections():
         list_obj.append([ip_adr, config[ip_adr]['x'], config[ip_adr]['y'], config[ip_adr]['descr']])

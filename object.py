@@ -15,14 +15,34 @@ class Object:
         self.del_object = del_object
         self.x = round(set_position_x / delta_x, 0)
         self.y = round(set_position_y / delta_x, 0)
-
+        self.label_info = tk.Label(self.root, text="111")
         # self.delta_x = delta_x
         self.oval = self.root.create_oval((self.x - 1) * delta_x, (self.y - 1) * delta_x, (self.x + 1) * delta_x,
                                                  (self.y + 1) * delta_x, fill='red')
         self.root.tag_bind(self.oval, "<Button-1>",
                                   lambda event, element=self.oval: self.name_obj(event, element))
+
+        self.root.tag_bind(self.oval, "<Enter>",
+                           lambda event, element=self.oval: self.enter(event, element))
+
+        self.root.tag_bind(self.oval, "<Leave>",
+                           lambda event, element=self.oval: self.leave(event, element))
         # self.root.tag_bind(self.oval, "<Button-3>",
         #                           lambda event, element=self.oval: self.right_button_click(event, element))
+
+
+    def enter(self, event, element):
+        self.root.after(3000, self.enter_sleep(event, element))
+        print(event.x, event.y)
+
+    def enter_sleep(self, event, element):
+        self.label_info.config(text=self.ip_adr+"\n"+self.descr)
+        self.label_info.place(x=event.x+5, y=event.y+5)
+        # print(event.x,event.y)
+
+    def leave(self, event, element):
+        self.label_info.place_forget()
+        # print(event.x,event.y)
 
     def name_obj(self, event, element):
         # print(element)
