@@ -49,12 +49,12 @@ class MainFrame(tk.Frame):
         self.main_images_pi = ImageTk.PhotoImage(self.main_images_copy)
         self.main_canvas.create_image(0, 0, anchor='nw', image=self.main_images_pi)  # Размещаем
         self.main_canvas.place(x=0, y=0)
-        # ----
+        # Загружаем объекты из файла конфигурации
         for _ in sl.load_ini():
             new_device = Object(self.main_canvas, int(float(_[1])), int(float(_[2])), self.delta_x, self.del_object)
             new_device.label = self.main_canvas.create_text(int(float(_[1])), int(float(_[2])), anchor='w', text=_[0])
             self.main_canvas.tag_lower(new_device.label)
-            print(new_device.label)
+            # print(new_device.label)
             new_device.ip_adr = _[0]
             new_device.descr = _[3]
             self.dict_object[new_device.oval] = new_device
@@ -72,13 +72,14 @@ class MainFrame(tk.Frame):
         width = self.main_images_copy.width
         # print(self.main_window_w - 200, width, self.main_images.height)
         # delta = int(round(height*0.05,0))
+        # Если надо увеличить и текущий размер меньше размера картинки
         if event.delta > 0 and width < self.main_images.width:
             images_resize_h = height*2
             images_resize_w = (height*2) * self.im_ratio
             self.delta_x *= 2
             for _ in self.dict_object.keys():
                 self.dict_object[_].resize(self.delta_x)
-
+        # Если надо уменьшить и текущий размер больше размера окна
         elif event.delta < 0 and width > self.main_window_w:
             self.delta_x/=2
             images_resize_h = height/2
@@ -97,13 +98,14 @@ class MainFrame(tk.Frame):
         self.main_canvas.create_image(0, 0, anchor='nw', image=self.main_images_pi)
         # self.main_canvas.tag_raise(self.oval)
         # Поднимаем все объекты над канвой
-
         for _ in self.dict_object.keys():
             self.main_canvas.tag_raise(_)
+            # Отображаем метки только если масштаб 4 и больше
             if self.delta_x > 3:
                 self.main_canvas.tag_raise(self.dict_object[_].label)
             else:
                 self.main_canvas.tag_lower(self.dict_object[_].label)
+        # Поднимаем выделение
         for _ in self.del_object.keys():
             self.main_canvas.tag_raise(self.del_object[_])
         # print(self.main_canvas.find_all())
@@ -120,7 +122,7 @@ class MainFrame(tk.Frame):
             self.right_menu.add_command(label="Создать", command=self.create_object)
         else:
             # print("o")
-            self.right_menu.add_command(label="Удалить", command = lambda el=element: self.del_object(el))
+            self.right_menu.add_command(label="Удалить", command=lambda el=element: self.del_object(el))
                                         # command=self.del_object)
         self.position_cursor_old_x = event.x
         self.position_cursor_old_y = event.y
@@ -134,18 +136,19 @@ class MainFrame(tk.Frame):
         Создание новых объектов
         :return:
         """
-        print("Создание")
+        # print("Создание")
 
         # Преобразуем координаты окна в координаты канвы
         self.set_position_x = self.main_canvas.canvasx(self.position_cursor_old_x)
         self.set_position_y = self.main_canvas.canvasy(self.position_cursor_old_y)
+        # Отображаем окно для ввода дополнительной информации
         descr = Descr(self.root)
         _, x, y = self.root.geometry().split('+')
         descr.geometry(f"200x180+{self.position_cursor_old_x+int(x)+10}+{self.position_cursor_old_y+int(y)}")
         descr.grab_set()
         descr.wait_window()
         # print(descr.button)
-
+        # Если в форме была нажата кнопка создать
         if descr.button:
             new_device = Object(self.main_canvas, self.set_position_x, self.set_position_y, self.delta_x, self.del_object)
             new_device.ip_adr = descr.ip_adr

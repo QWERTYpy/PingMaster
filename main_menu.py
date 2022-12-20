@@ -19,18 +19,15 @@ class MainMenu:
 
 
     def save_object(self):
-        # # if os.path.exists("ip_config.ini"):
-        # config = configparser.ConfigParser()
-        # for _ in self.dict_device.keys():
-        #     # print(self.main_canvas.move(_, delta, delta))
-        #     x, y = self.dict_device[_].coord
-
+        # Сохраняем объекты
         # self.title_left_down_text.set("Сохранено")
         sl.save_ini(self.dict_object)
         self.info.title_left_down_text.set("Сохранено")
 
     def del_object(self):
+        # Удаляем объекты с канвы
         for _ in self.del_oblect.keys():
+            self.dict_object.pop(_)
             self.main_canvas.delete(self.del_oblect[_])
             self.main_canvas.delete(_)
         self.del_oblect.clear()

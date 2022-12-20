@@ -3,6 +3,7 @@ from object import Object
 
 
 def save_ini(dict_object):
+    # Сохраняем созданные объекты в файл
     config = configparser.ConfigParser()
     for _ in dict_object.keys():
         ip_adr = dict_object[_].ip_adr
@@ -17,8 +18,9 @@ def save_ini(dict_object):
 
 
 def load_ini():
+    # Загружаем объекты из файла
     config = configparser.ConfigParser()
-    config.read('example.ini', encoding="utf-8")
+    config.read('example.ini', encoding='cp1251')
     list_obj = []
     for ip_adr in config.sections():
         list_obj.append([ip_adr, config[ip_adr]['x'], config[ip_adr]['y'], config[ip_adr]['descr']])
