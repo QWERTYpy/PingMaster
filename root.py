@@ -7,9 +7,11 @@ import threading
 import time
 
 def ping_object():
+    # Опрос устройств
     while True:
         time.sleep(5)
         for _ in dict_object.keys():
+            # Составляем IP адрес устройства
             ping_result = ping("10.64."+dict_object[_].ip_adr)
             ping_result_bool = True  # Пинг прошёл
             if ping_result is None or type(ping_result) is not float:
@@ -17,9 +19,11 @@ def ping_object():
             if ping_result_bool:
                 map.main_canvas.itemconfig(_, fill="green")
                 text_ping.text_right_info.insert(tk.INSERT, f"{dict_object[_].ip_adr}-ON\n", 'cool')
+                dict_object[_].ping_status = True
             else:
                 map.main_canvas.itemconfig(_, fill="red")
                 text_ping.text_right_info.insert(tk.INSERT, f"{dict_object[_].ip_adr}-OFF\n", 'warning')
+                dict_object[_].ping_status = False
         # print("Ping")
 
 

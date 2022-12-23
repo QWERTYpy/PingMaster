@@ -9,6 +9,7 @@ from description import Descr
 import saveload as sl
 import threading
 import time
+# Создает основное окно
 
 class MainFrame(tk.Frame):
     def __init__(self, root, map_width, map_height, dict_object, del_object):
@@ -21,8 +22,8 @@ class MainFrame(tk.Frame):
         self.del_object = del_object
         self.load_map(map_width, map_height)
 
-
     def load_map(self, map_width, map_height):
+        # Загружаем карту
         frame_map = tk.Frame(bg='white', bd=2)
         frame_map.place(x=0, y=0, width=map_width+25, height=map_height+25)
         # Создаем ползунки
@@ -59,18 +60,16 @@ class MainFrame(tk.Frame):
             # print(new_device.label)
             new_device.ip_adr = _[0]
             new_device.descr = _[3]
+            new_device.ping_status = _[4]
+            # Проверяем предыдущий статус объкта
+            if new_device.ping_status:
+                self.main_canvas.itemconfig(new_device.oval, fill="green")
+            else:
+                self.main_canvas.itemconfig(new_device.oval, fill="red")
             self.dict_object[new_device.oval] = new_device
         # Задаем реакции
         self.main_canvas.bind("<MouseWheel>", self.mousewheel)
         self.main_canvas.bind("<Button-3>", self.right_button_click)
-
-
-    def ping_object(self):
-        i=1
-        while i<5:
-            i+=1
-            time.sleep(3)
-            print("Ping")
 
     def mousewheel(self,event):
         """
@@ -96,7 +95,6 @@ class MainFrame(tk.Frame):
             images_resize_w = height*self.im_ratio/2
             for _ in self.dict_object.keys():
                 self.dict_object[_].resize(self.delta_x)
-
         else:
             return
 
@@ -126,12 +124,9 @@ class MainFrame(tk.Frame):
         :param event:
         :return:
         """
-        thr = threading.Thread(target=self.ping_object)
-        thr.start()
-        print("...")
         self.right_menu = tk.Menu(self.main_canvas, tearoff=0)
         if element is None:
-            print("p")
+            # print("p")
             self.right_menu.add_command(label="Создать", command=self.create_object)
         else:
             # print("o")

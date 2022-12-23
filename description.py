@@ -1,5 +1,5 @@
 import tkinter as tk
-
+# Всплывающее меню при создании или редактировании информации о объекте
 class Descr(tk.Toplevel):
     def __init__(self, parent, ip_adr="", descr=""):
         super().__init__(parent)
@@ -10,7 +10,7 @@ class Descr(tk.Toplevel):
         self.label_dsc.place(x=0, y=0)
         self.label_ip = tk.Label(self, text="IP адрес:")
         self.label_ip.place(x=0, y=20)
-        self.entry_ip = tk.Entry(self,width=20)
+        self.entry_ip = tk.Entry(self, width=20)
         self.entry_ip.insert(0, self.ip_adr)
         self.entry_ip.place(x=70, y=20)
         self.label_txt = tk.Label(self, text="Описание:")
@@ -24,12 +24,14 @@ class Descr(tk.Toplevel):
         self.button_ok.place(x=100, y=140)
 
     def button_save(self):
+        # Кнопка - сохранить
         self.button = True
         self.ip_adr = self.entry_ip.get()
         self.descr = self.txt.get(1.0, "end")
         self.destroy()
 
     def button_cansel(self):
+        # Кнопка - отменить
         self.button = False
         self.destroy()
 

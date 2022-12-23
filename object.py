@@ -11,6 +11,7 @@ class Object:
         self.rect = ""
         self.label = ""
         self.delta_x = delta_x
+        self.ping_status = ""
         # Создание нового объекта и назначение ему обработчиков
         self.root = root
         self.del_object = del_object

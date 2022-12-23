@@ -38,6 +38,7 @@ class MainMenu:
         self.info.title_left_down_text.set("Удалено")
 
     def edit_object(self):
+        # Редактирование описания объектов
         for obj in self.del_oblect.keys():
             # self.main_canvas.itemconfig(obj, fill="green")
             descr = Descr(self.root, ip_adr=self.dict_object[obj].ip_adr, descr=self.dict_object[obj].descr)
@@ -48,15 +49,9 @@ class MainMenu:
             descr.grab_set()
             descr.wait_window()
             # # print(descr.button)
-            # Если в форме была нажата кнопка создать
+            # Если в форме была нажата кнопка сохранить
             if descr.button:
                 self.dict_object[obj].ip_adr = descr.ip_adr
                 self.dict_object[obj].descr = descr.descr
                 self.main_canvas.itemconfigure(self.dict_object[obj].label, text=descr.ip_adr)
                 self.info.title_left_down_text.set("Описание изменено")
-            #     new_device = Object(self.main_canvas, self.set_position_x, self.set_position_y, self.delta_x,
-            #                         self.del_object)
-            #     new_device.ip_adr = descr.ip_adr
-            #     new_device.descr = descr.descr
-            #     self.dict_object[new_device.oval] = new_device
-            #     # print(self.dict_object[new_device.oval].ip_adr, self.dict_object[new_device.oval].descr)
