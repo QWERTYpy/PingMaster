@@ -4,10 +4,12 @@ import tkinter as tk
 from PIL import Image, ImageTk
 # from device import Device
 import saveload as sl
+from description import Descr
 
 class MainMenu:
     def __init__(self, root, map, info, dict_object, del_object):
         self.info = info
+        self.root = root
         self.main_canvas = map.main_canvas
         self.dict_object = dict_object
         self.del_oblect = del_object
@@ -16,6 +18,7 @@ class MainMenu:
         root.config(menu=self.main_menu)
         self.main_menu.add_command(label="Сохранить", command=self.save_object)
         self.main_menu.add_command(label="Удалить", command=self.del_object)
+        self.main_menu.add_command(label="Редактировать", command=self.edit_object)
 
 
     def save_object(self):
@@ -32,3 +35,24 @@ class MainMenu:
             self.main_canvas.delete(_)
         self.del_oblect.clear()
         self.info.title_left_down_text.set("Удалено")
+
+    def edit_object(self):
+        for obj in self.del_oblect.keys():
+            descr = Descr(self.root, ip_adr=self.dict_object[obj].ip_adr, descr=self.dict_object[obj].descr)
+            _, x, y = self.root.geometry().split('+')
+            descr.geometry(f"200x180+{int(x) + 100}+{int(y)+100}")
+            # print(self.dict_object[obj].ip_adr)
+            # print(obj)
+            descr.grab_set()
+            descr.wait_window()
+            # # print(descr.button)
+            # Если в форме была нажата кнопка создать
+            if descr.button:
+                self.dict_object[obj].ip_adr = descr.ip_adr
+                self.dict_object[obj].descr = descr.descr
+            #     new_device = Object(self.main_canvas, self.set_position_x, self.set_position_y, self.delta_x,
+            #                         self.del_object)
+            #     new_device.ip_adr = descr.ip_adr
+            #     new_device.descr = descr.descr
+            #     self.dict_object[new_device.oval] = new_device
+            #     # print(self.dict_object[new_device.oval].ip_adr, self.dict_object[new_device.oval].descr)
