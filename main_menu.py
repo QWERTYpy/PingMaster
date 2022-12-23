@@ -21,6 +21,7 @@ class MainMenu:
         self.main_menu.add_command(label="Редактировать", command=self.edit_object)
 
 
+
     def save_object(self):
         # Сохраняем объекты
         # self.title_left_down_text.set("Сохранено")
@@ -38,6 +39,7 @@ class MainMenu:
 
     def edit_object(self):
         for obj in self.del_oblect.keys():
+            # self.main_canvas.itemconfig(obj, fill="green")
             descr = Descr(self.root, ip_adr=self.dict_object[obj].ip_adr, descr=self.dict_object[obj].descr)
             _, x, y = self.root.geometry().split('+')
             descr.geometry(f"200x180+{int(x) + 100}+{int(y)+100}")
@@ -50,6 +52,8 @@ class MainMenu:
             if descr.button:
                 self.dict_object[obj].ip_adr = descr.ip_adr
                 self.dict_object[obj].descr = descr.descr
+                self.main_canvas.itemconfigure(self.dict_object[obj].label, text=descr.ip_adr)
+                self.info.title_left_down_text.set("Описание изменено")
             #     new_device = Object(self.main_canvas, self.set_position_x, self.set_position_y, self.delta_x,
             #                         self.del_object)
             #     new_device.ip_adr = descr.ip_adr

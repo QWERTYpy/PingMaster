@@ -16,7 +16,7 @@ class Object:
         self.del_object = del_object
         self.x = round(set_position_x / delta_x, 0)
         self.y = round(set_position_y / delta_x, 0)
-        self.label_info = tk.Label(self.root, text="111")
+        self.label_info = tk.Label(self.root, text="")
         # self.delta_x = delta_x
         self.oval = self.root.create_oval((self.x - 1) * delta_x, (self.y - 1) * delta_x, (self.x + 1) * delta_x,
                                                  (self.y + 1) * delta_x, fill='red')

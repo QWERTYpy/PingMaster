@@ -7,6 +7,8 @@ from object import Object
 from main_menu import MainMenu
 from description import Descr
 import saveload as sl
+import threading
+import time
 
 class MainFrame(tk.Frame):
     def __init__(self, root, map_width, map_height, dict_object, del_object):
@@ -62,6 +64,14 @@ class MainFrame(tk.Frame):
         self.main_canvas.bind("<MouseWheel>", self.mousewheel)
         self.main_canvas.bind("<Button-3>", self.right_button_click)
 
+
+    def ping_object(self):
+        i=1
+        while i<5:
+            i+=1
+            time.sleep(3)
+            print("Ping")
+
     def mousewheel(self,event):
         """
         Действия при прокрутке ролика мышки
@@ -116,6 +126,9 @@ class MainFrame(tk.Frame):
         :param event:
         :return:
         """
+        thr = threading.Thread(target=self.ping_object)
+        thr.start()
+        print("...")
         self.right_menu = tk.Menu(self.main_canvas, tearoff=0)
         if element is None:
             print("p")
