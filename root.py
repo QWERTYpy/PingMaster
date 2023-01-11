@@ -21,6 +21,9 @@ def watchdog_timer():
                 print_time = timeout - count_sec
                 info.title_left_down_text.set(f"Осталось: {print_time} c.")
             now = time.monotonic()
+            if mm.reboot:
+                mm.reboot = False
+                break
 
 
 def ping_object():
@@ -85,7 +88,7 @@ info = InfoFrame('info', root, map, dict_object, 1200, 20)
 stat = InfoFrame('stat', root, map, dict_object, 1200, 20)
 obj_info = InfoFrame('obj', root, map, dict_object, 180, 180)
 text_ping = InfoFrame('ping', root, map, dict_object, 180, 400, obj_info)
-MainMenu(root, map, info, dict_object, del_object)
+mm = MainMenu(root, map, info, dict_object, del_object)
 # threading.Thread(target=ping_object).start()
 threading.Thread(target=watchdog_timer).start()
 root.mainloop()  # Запускаем отображение
