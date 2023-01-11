@@ -61,6 +61,7 @@ class MainFrame(tk.Frame):
             new_device.ip_adr = _[0]
             new_device.descr = _[3]
             new_device.ping_status = _[4]
+            new_device.ping_off = _[5]
             # Проверяем предыдущий статус объкта
             if new_device.ping_status:
                 self.main_canvas.itemconfig(new_device.oval, fill="green")
