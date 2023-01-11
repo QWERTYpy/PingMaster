@@ -8,7 +8,7 @@ import time
 import datetime
 
 def watchdog_timer():
-    timeout = 100
+    timeout = 600
     while True:
         ping_object()
         start = time.monotonic()

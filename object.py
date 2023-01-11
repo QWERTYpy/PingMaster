@@ -1,6 +1,7 @@
 # Создание объектов
 import os.path
 import tkinter as tk
+import time
 from PIL import Image, ImageTk
 # from device import Device
 
@@ -11,8 +12,8 @@ class Object:
         self.rect = ""
         self.label = ""
         self.delta_x = delta_x
-        self.ping_status = ""  # True & False
-        self.ping_off = ""  # Date and Time
+        self.ping_status = False  # True & False
+        self.ping_off = time.time()  # Date and Time
         # Создание нового объекта и назначение ему обработчиков
         self.root = root
         self.del_object = del_object
