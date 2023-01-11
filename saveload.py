@@ -1,5 +1,4 @@
 import configparser
-from object import Object
 
 
 def save_ini(dict_object):
