@@ -39,6 +39,7 @@ class InfoFrame(tk.Frame):
         #                                 textvariable=self.title_obj_info_text)
         # self.title_obj_info.place(relx=0, rely=0)
         self.obj_info_text = tk.Text(frame_map, width=20, height=10)
+        self.obj_info_text.tag_config('head', font=('Times New Roman',12,'bold'))
         self.obj_info_text.place(relx=0, rely=0)
 
     def ping_info(self, map_width, map_height):
@@ -79,9 +80,9 @@ class InfoFrame(tk.Frame):
                     #                              f"Описание:\n{self.dict_object[_].descr}\n")
                     self.obj_info.obj_info_text.configure(state='normal')
                     self.obj_info.obj_info_text.delete(1.0, tk.END)
-                    self.obj_info.obj_info_text.insert(tk.INSERT,"IP Адрес\n")
+                    self.obj_info.obj_info_text.insert(tk.INSERT,"IP Адрес\n", 'head')
                     self.obj_info.obj_info_text.insert(tk.INSERT, f"10.64.{self.dict_object[_].ip_adr}\n")
-                    self.obj_info.obj_info_text.insert(tk.INSERT, "Описание\n")
+                    self.obj_info.obj_info_text.insert(tk.INSERT, "Описание\n", 'head')
                     self.obj_info.obj_info_text.insert(tk.INSERT, f"{self.dict_object[_].descr}\n")
                     self.obj_info.obj_info_text.configure(state='disabled')
                     # Получаем координаты объекта
