@@ -1,3 +1,4 @@
+import sys
 import tkinter as tk
 from main_frame import MainFrame
 from main_menu import MainMenu
@@ -92,4 +93,5 @@ mm = MainMenu(root, map, info, dict_object, del_object)
 # threading.Thread(target=ping_object).start()
 threading.Thread(target=watchdog_timer).start()
 root.mainloop()  # Запускаем отображение
+sys.exit()
 # print(dict_object)

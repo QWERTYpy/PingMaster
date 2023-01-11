@@ -160,6 +160,7 @@ class MainFrame(tk.Frame):
         # Если в форме была нажата кнопка создать
         if descr.button:
             new_device = Object(self.main_canvas, self.set_position_x, self.set_position_y, self.delta_x, self.del_object)
+            new_device.label = self.main_canvas.create_text(self.set_position_x+self.delta_x, self.set_position_y, anchor='w', text=descr.ip_adr)
             new_device.ip_adr = descr.ip_adr
             new_device.descr = descr.descr
             self.dict_object[new_device.oval] = new_device
