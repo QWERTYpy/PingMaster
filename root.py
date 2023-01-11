@@ -52,7 +52,8 @@ root.configure(background='#ffffff')  # Устанавливаем цвет фо
 
 map = MainFrame(root, 1000, 560, dict_object, del_object)
 info = InfoFrame('info', root, map, dict_object, 1200, 20)
-text_ping = InfoFrame('ping', root, map, dict_object, 180, 400)
+obj_info = InfoFrame('obj', root, map, dict_object, 180, 180)
+text_ping = InfoFrame('ping', root, map, dict_object, 180, 400, obj_info)
 MainMenu(root, map, info, dict_object, del_object)
 threading.Thread(target=ping_object).start()
 root.mainloop()  # Запускаем отображение
