@@ -24,7 +24,6 @@ class MainMenu:
 
     def save_object(self):
         # Сохраняем объекты
-        # self.title_left_down_text.set("Сохранено")
         sl.save_ini(self.dict_object)
         self.info.title_left_down_text.set("Сохранено")
 

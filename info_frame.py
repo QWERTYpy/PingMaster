@@ -12,6 +12,8 @@ class InfoFrame(tk.Frame):
         super().__init__(root)
         if type == 'info':
             self.load_info(map_width, map_height)
+        if type == 'stat':
+            self.load_stat(map_width, map_height)
         if type == 'ping':
             self.obj_info = obj_info
             self.object_name = ""
@@ -28,6 +30,21 @@ class InfoFrame(tk.Frame):
         self.title_left_down_text.set("Привет")
         self.title_left_down = tk.Label(frame_map, anchor="w", height=1, width=50, textvariable=self.title_left_down_text)
         self.title_left_down.place(relx=0, rely=0)
+
+    def load_stat(self, map_width, map_height):
+        # Создаем информационное поле внизу программы
+        frame_map = tk.Frame(bg='gray90', bd=2)
+        frame_map.place(x=350, y=585, width=map_width, height=map_height)
+        # Добавляем информационное поле
+        # self.stat_text = tk.StringVar()
+        # self.stat_text.set("Привет111")
+        # self.stat = tk.Label(frame_map, anchor="w", height=1, width=50, textvariable=self.stat_text)
+        # self.stat.place(relx=0, rely=0)
+        self.stat = tk.Text(frame_map,width=40, height=1)
+        self.stat.tag_config('on', font=('Times New Roman',10,'bold'), foreground="green" )
+        self.stat.tag_config('off', font=('Times New Roman', 10, 'bold'), foreground="red")
+        self.stat.tag_config('all', font=('Times New Roman', 10, 'bold'), foreground="black")
+        self.stat.place(relx=0, rely=0)
 
     def object_info(self, map_width, map_height):
         # Создаем информационное поле для вывода информации о объекте

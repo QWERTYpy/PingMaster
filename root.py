@@ -10,8 +10,12 @@ import datetime
 
 def ping_object():
     # Опрос устройств
+    info.title_left_down_text.set(f"Загружено: {len(dict_object)}")
+    # stat.stat.insert(tk.INSERT,f"qqq",'off')
     while True:
+        stat_info()
         time.sleep(5)
+        info.title_left_down_text.set(f"")
         for _ in dict_object.keys():
             # Составляем IP адрес устройства
             ping_result = ping("10.64." + dict_object[_].ip_adr)
@@ -30,8 +34,21 @@ def ping_object():
                     dict_object[_].ping_status = False
                     dict_object[_].ping_off = time.time()
             ping_info()
+            stat_info()
 
         # print("Ping")
+def stat_info():
+    stat.stat.delete(1.0, tk.END)
+    stat.stat.insert(tk.INSERT, f"Всего: {len(dict_object)}  ", 'all')
+    on = 0
+    off = 0
+    for _ in dict_object.values():
+        if _.ping_status:
+            on += 1
+        else:
+            off += 1
+    stat.stat.insert(tk.INSERT, f"На связи: {on}  ", 'on')
+    stat.stat.insert(tk.INSERT, f"Отсутсвуют: {off}  ", 'off')
 
 def ping_info():
     text_ping.text_right_info.configure(state='normal')
@@ -52,6 +69,7 @@ root.configure(background='#ffffff')  # Устанавливаем цвет фо
 
 map = MainFrame(root, 1000, 560, dict_object, del_object)
 info = InfoFrame('info', root, map, dict_object, 1200, 20)
+stat = InfoFrame('stat', root, map, dict_object, 1200, 20)
 obj_info = InfoFrame('obj', root, map, dict_object, 180, 180)
 text_ping = InfoFrame('ping', root, map, dict_object, 180, 400, obj_info)
 MainMenu(root, map, info, dict_object, del_object)
