@@ -10,8 +10,8 @@ class MainMenu:
     def __init__(self, root, map, info, dict_object, del_object):
         self.info = info
         self.root = root
-        self.reboot = False
         self.main_canvas = map.main_canvas
+        self.map = map
         self.dict_object = dict_object
         self.del_oblect = del_object
         # Создаем меню
@@ -23,7 +23,7 @@ class MainMenu:
         self.main_menu.add_command(label="Обновить", command=self.reboot_object)
 
     def reboot_object(self):
-        self.reboot = True
+        self.map.reboot_ping = True
 
     def save_object(self):
         # Сохраняем объекты

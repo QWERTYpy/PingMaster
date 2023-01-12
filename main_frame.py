@@ -20,6 +20,7 @@ class MainFrame(tk.Frame):
         self.delta_x = 1  # Текущая кратность
         self.dict_object = dict_object  # Словарь с созданными объектами
         self.del_object = del_object
+        self.reboot_ping = False
         self.load_map(map_width, map_height)
 
     def load_map(self, map_width, map_height):
