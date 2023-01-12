@@ -5,54 +5,57 @@ import datetime
 import threading
 
 
-from PIL import Image, ImageTk
-# from device import Device
-from object import Object
-from main_menu import MainMenu
-
 class InfoFrame(tk.Frame):
-    def __init__(self, type, root, map, dict_object, map_width, map_height, obj_info = None, _info = None, stat = None):
-        self.map = map
-        self.main_canvas = map.main_canvas
+    def __init__(self, type_frame, root, mainframe, dict_object, map_width, map_height,
+                 obj_info=None, inform=None, stat=None):
+        self.map = mainframe
+        self.main_canvas = mainframe.main_canvas
         self.dict_object = dict_object
-        self.ms_time = 600000
-        self.ms_time_delta = 0
+        self.ms_time = 600000  # Задержка пинга 10 минут
+        self.ms_time_delta = 0  # Накопитель для обратного отсчета
         super().__init__(root)
-        if type == 'info':
+        if type_frame == 'info':  # Создаем информационное поле внизу слева
             self.load_info(map_width, map_height)
-        if type == 'stat':
+        if type_frame == 'stat':  # Создаем окно статистики
             self.load_stat(map_width, map_height)
-        if type == 'ping':
+        if type_frame == 'ping':  # Создаем поле для вывода пинга
             self.obj_info = obj_info
-            self.info = _info
+            self.info = inform
             self.stat = stat
             self.object_name = ""
             self.ping_info(map_width, map_height)
-        if type == 'obj':
+        if type_frame == 'obj':  # Создаем поле для вывода описания
             self.object_info(map_width, map_height)
 
     def load_info(self, map_width, map_height):
+        """
+        Создаем информационное поле для вывода служебной информации
+        :param map_width: Ширина фрейма
+        :param map_height: Высота фрейма
+        :return:
+        """
         # Создаем информационное поле внизу программы
         frame_map = tk.Frame(bg='gray90', bd=2)
         frame_map.place(x=0, y=585, width=map_width, height=map_height)
         # Добавляем информационное поле
         self.title_left_down_text = tk.StringVar()
         self.title_left_down_text.set("Привет")
-        self.title_left_down = tk.Label(frame_map, anchor="w", height=1, width=50, textvariable=self.title_left_down_text)
+        self.title_left_down = tk.Label(frame_map, anchor="w", height=1, width=50,
+                                        textvariable=self.title_left_down_text)
         self.title_left_down.place(relx=0, rely=0)
-        # self.ping_timer()
-
 
 
     def load_stat(self, map_width, map_height):
+        """
+        Создаем информационное поле для вывода статистики по объектам
+        :param map_width:
+        :param map_height:
+        :return:
+        """
         # Создаем информационное поле внизу программы
         frame_map = tk.Frame(bg='gray90', bd=2)
         frame_map.place(x=350, y=585, width=map_width, height=map_height)
         # Добавляем информационное поле
-        # self.stat_text = tk.StringVar()
-        # self.stat_text.set("Привет111")
-        # self.stat = tk.Label(frame_map, anchor="w", height=1, width=50, textvariable=self.stat_text)
-        # self.stat.place(relx=0, rely=0)
         self.stat = tk.Text(frame_map,width=40, height=1)
         self.stat.tag_config('on', font=('Times New Roman',10,'bold'), foreground="green" )
         self.stat.tag_config('off', font=('Times New Roman', 10, 'bold'), foreground="red")
@@ -60,14 +63,15 @@ class InfoFrame(tk.Frame):
         self.stat.place(relx=0, rely=0)
 
     def object_info(self, map_width, map_height):
+        """
+        Поле для вывода описания объекта
+        :param map_width:
+        :param map_height:
+        :return:
+        """
         # Создаем информационное поле для вывода информации о объекте
         frame_map = tk.Frame(bg='gray90', bd=2)
         frame_map.place(x=1025, y=400, width=map_width, height=map_height)
-        # self.title_obj_info_text = tk.StringVar()
-        # self.title_obj_info_text.set("")
-        # self.title_obj_info = tk.Label(frame_map, anchor="w", height=10, width=25,
-        #                                 textvariable=self.title_obj_info_text)
-        # self.title_obj_info.place(relx=0, rely=0)
         self.obj_info_text = tk.Text(frame_map, width=20, height=10)
         self.obj_info_text.tag_config('head', font=('Times New Roman',12,'bold'))
         self.obj_info_text.place(relx=0, rely=0)
@@ -84,77 +88,71 @@ class InfoFrame(tk.Frame):
         self.text_right_info.tag_config('warning', background="yellow", foreground="red")
         self.text_right_info.tag_config('cool', background="green", foreground="black")
         self.scroll.config(command=self.text_right_info.yview)
-        # Для блокировки ввода
-        # self.text_right_info.configure(state='disabled')
         self.scroll.place(in_=self.text_right_info, relx=1.0, relheight=1.0, bordermode="outside")
-        # text.insert(INSERT, 'text' * 500)
-        # self.text_right_info.insert(tk.INSERT, '0123456789ABCDEFG\n'*50)
-        # self.text_right_info.configure(state='disabled')
         self.text_right_info.place(relx=0, rely=0)
         self.text_right_info.bind("<Button-1>", self.button_b1)
-        self.ping_status = False
+        self.ping_status = False  # Переменная для защиты от повторного запуска пинга
+        # Запускаем пинг устройств
         self.start_ping()
+        # Запускаем таймер обратного отсчета
         self.ping_timer()
 
     def start_ping(self):
-        print("Event")
         if not self.ping_status:
-            self.ping_status = True
+            self.ping_status = True  # Включаем флаг, что запущен пинг устройств
             self.ping_thread = threading.Thread(target=self.ping_object)
             self.ping_thread.start()
-
-        # print(t.is_alive())
-        # t.join()
         self.aft_ping = self.after(self.ms_time,self.start_ping)
 
     def ping_timer(self):
+        """
+        Обратный таймер до начала следующего пинга
+        :return:
+        """
+        # Проверка флага на принудительный запуск пинга
         if self.map.reboot_ping:
-            self.map.reboot_ping  = False
-            self.after_cancel(self.aft_ping)
-            self.start_ping()
+            self.map.reboot_ping = False  # Восстанавливаем флаг
+            self.after_cancel(self.aft_ping)  # Отменяем отложенный запуск
+            self.start_ping()  # Запускаем новую итерацию
 
-        if not self.ping_status:
+        if not self.ping_status:  # Если не производится пинг, то выводим обратный отсчет
             print_time = self.ms_time/1000-self.ms_time_delta
             self.info.title_left_down_text.set(f"Осталось: {int(print_time)} c.")
-            self.ms_time_delta +=1
+            self.ms_time_delta += 1
+        # Взводим таймер на 1 секунду
         self.after(999, self.ping_timer)
 
     def ping_object(self):
-        # if self.ping_thread.is_alive():
-        #     print("Break")
-        #     return
-        print("Start Ping")
         # Опрос устройств
         self.info.title_left_down_text.set(f"Выполняется опрос устройств ...")
-        # stat.stat.insert(tk.INSERT,f"qqq",'off')
-        # while True:
+        # Обновляем статистику по объектам
         self.stat_info()
-        # info.title_left_down_text.set(f"")
         for _ in self.dict_object.keys():
-            # Составляем IP адрес устройства
+            # Составляем IP адрес устройства и пингуем его
             ping_result = ping("10.64." + self.dict_object[_].ip_adr)
             ping_result_bool = True  # Пинг прошёл
             if ping_result is None or type(ping_result) is not float:
                 ping_result_bool = False
             if ping_result_bool:
+                # Если пинг прошел, отображаем значек зеленым
                 self.map.main_canvas.itemconfig(_, fill="green")
+                # Включаем флаг, что устройство на связи
                 if not self.dict_object[_].ping_status:
                     self.dict_object[_].ping_status = True
             else:
+                # Если нет - красным
                 self.map.main_canvas.itemconfig(_, fill="red")
+                # Выключаем флаг, что устройство на связи, записываем время ухода
                 if self.dict_object[_].ping_status:
                     self.dict_object[_].ping_status = False
                     self.dict_object[_].ping_off = time.time()
+            # Обновляем данные в таблице
             self.ping_object_info()
+            # Обновляем данные в поле статистики
             self.stat_info()
-        print("Stop Ping")
+        # Выключаем флаг, что идет опрос устройств
         self.ping_status = False
         self.ms_time_delta = 0
-        # self.after(1000, self.ping_object)
-            #stat_info()
-        # time.sleep(600)
-
-        # print("Ping")
 
     def stat_info(self):
         self.stat.stat.delete(1.0, tk.END)
