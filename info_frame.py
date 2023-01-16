@@ -186,7 +186,7 @@ class InfoFrame(tk.Frame):
                     str_time = str_time.strip()
                     str_time_out = f"{str_day}д. {str_time[:-3]}"
                 self.text_right_info.insert(tk.INSERT,
-                                                 f"{self.dict_object[__].ip_adr}-{str_time_out}\n",
+                                                 f"{self.dict_object[__].ip_adr:7}-{str_time_out}\n",
                                                  color_text)
         self.text_right_info.configure(state='disabled')
         # self.text_right_info.update()
@@ -202,11 +202,8 @@ class InfoFrame(tk.Frame):
             # print(self.object_name)
             # Ищем объект в общем списке
             for _ in self.dict_object.keys():
+                #  Если в списке есть выбранный ip адрес, то выводим информацию
                 if self.dict_object[_].ip_adr == self.object_name:
-                    # print(self.object_name,"-",_)
-
-                    # self.obj_info.title_obj_info_text.set(f"\nIP Адрес:\n10.64.{self.dict_object[_].ip_adr}\n"
-                    #                              f"Описание:\n{self.dict_object[_].descr}\n")
                     self.obj_info.obj_info_text.configure(state='normal')
                     self.obj_info.obj_info_text.delete(1.0, tk.END)
                     self.obj_info.obj_info_text.insert(tk.INSERT,"IP Адрес\n", 'head')
@@ -217,7 +214,7 @@ class InfoFrame(tk.Frame):
                     # Получаем координаты объекта
                     _x, _y, _x1, _y1 = self.main_canvas.coords(_)
                     # Создаем анимацию на канве для отображения места объекта
-                    for _crat in range(200,0,-4):
+                    for _crat in range(200, 0, -4):
                         if _crat == 200:
                             rect = self.main_canvas.create_rectangle(_x-_crat, _y-_crat, _x1+_crat, _y1+_crat)
                         else:
