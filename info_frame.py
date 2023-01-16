@@ -86,6 +86,7 @@ class InfoFrame(tk.Frame):
         self.text_right_info = tk.Text(frame_map, width=19, height=24, yscrollcommand=self.scroll.set)
         # Создаем теги для цветового оформления текста
         self.text_right_info.tag_config('warning', background="yellow", foreground="red")
+        self.text_right_info.tag_config('new_warning', background="red", foreground="yellow")
         self.text_right_info.tag_config('cool', background="green", foreground="black")
         self.scroll.config(command=self.text_right_info.yview)
         self.scroll.place(in_=self.text_right_info, relx=1.0, relheight=1.0, bordermode="outside")
@@ -172,9 +173,21 @@ class InfoFrame(tk.Frame):
         self.text_right_info.delete(1.0, tk.END)
         for __ in self.dict_object.keys():
             if not self.dict_object[__].ping_status:
+                time_out = datetime.timedelta(seconds=int(time.time() - self.dict_object[__].ping_off))
+                time_delta = datetime.timedelta(hours=2)
+                if time_out < time_delta:
+                    color_text = "new_warning"
+                else:
+                    color_text = "warning"
+                str_time_out = str(time_out)
+                if len(str_time_out) > 8:
+                    str_day, str_time = str_time_out.split('days,')
+                    str_day = str_day.strip()
+                    str_time = str_time.strip()
+                    str_time_out = f"{str_day}д. {str_time[:-3]}"
                 self.text_right_info.insert(tk.INSERT,
-                                                 f"{self.dict_object[__].ip_adr}-{datetime.timedelta(seconds=int(time.time() - self.dict_object[__].ping_off))}\n",
-                                                 'warning')
+                                                 f"{self.dict_object[__].ip_adr}-{str_time_out}\n",
+                                                 color_text)
         self.text_right_info.configure(state='disabled')
         # self.text_right_info.update()
         # self.main_canvas.update()
