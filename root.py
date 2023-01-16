@@ -3,14 +3,22 @@ import tkinter as tk
 from main_frame import MainFrame
 from main_menu import MainMenu
 from info_frame import InfoFrame
+import saveload as sl
 
 
 # Создаем словарь для хранения созданных объектов
 dict_object = {}
 # Создаем словарь для хранения объектов на удаление
 del_object = {}
+def on_closing():
+    sl.save_ini(dict_object)
+    root.destroy()  # Закрыть окно
+
+
+
 
 root = tk.Tk()
+root.protocol("WM_DELETE_WINDOW", on_closing)
 root.title(("Ping Master - v.1.0"))
 root.geometry("1210x608+100+100")  # Создаем окно
 root.resizable(False, False)  # Запрещаем изменять размер окна

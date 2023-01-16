@@ -1,4 +1,5 @@
 import configparser
+import shutil
 
 
 def save_ini(dict_object):
@@ -16,6 +17,7 @@ def save_ini(dict_object):
                                'y': y,
                                'ping_status': ping_status,
                                'ping_off': ping_off}
+    shutil.copy('example.ini', 'example_tmp.ini')
     with open('example.ini', 'w') as configfile:
         config.write(configfile)
 
@@ -29,7 +31,6 @@ def load_ini():
         list_obj.append([ip_adr, config[ip_adr]['x'], config[ip_adr]['y'], config[ip_adr]['descr'],
                          (True, False)[config[ip_adr]['ping_status'] == 'False'], float(config[ip_adr]['ping_off'])])
     return list_obj
-    # print(list_obj)
 
 
 if __name__ == '__main__':
