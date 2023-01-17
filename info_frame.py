@@ -126,9 +126,12 @@ class InfoFrame(tk.Frame):
     def ping_object(self):
         # Опрос устройств
         self.info.title_left_down_text.set(f"Выполняется опрос устройств ...")
+        len_dict_object = len(self.dict_object)
+        count_dict_object = 0
         # Обновляем статистику по объектам
         self.stat_info()
         for _ in self.dict_object.keys():
+            count_dict_object += 1
             # Составляем IP адрес устройства и пингуем его
             ping_result = ping("10.64." + self.dict_object[_].ip_adr)
             ping_result_bool = True  # Пинг прошёл
@@ -151,6 +154,9 @@ class InfoFrame(tk.Frame):
             self.ping_object_info()
             # Обновляем данные в поле статистики
             self.stat_info()
+            # Обновлаяем данные о количестве
+            self.info.title_left_down_text.set(f"Выполняется опрос устройств ... {count_dict_object} из {len_dict_object}")
+
         # Выключаем флаг, что идет опрос устройств
         self.ping_status = False
         self.ms_time_delta = 0
@@ -199,6 +205,7 @@ class InfoFrame(tk.Frame):
             index, _ = event.widget.index("@%s,%s" % (event.x, event.y)).split('.')
             # Получаем строку и отделяем IP
             self.object_name, _ = self.text_right_info.get(f"{index}.0", f"{index}.{tk.END}").split('-')
+            self.object_name = self.object_name.strip()
             # print(self.object_name)
             # Ищем объект в общем списке
             for _ in self.dict_object.keys():

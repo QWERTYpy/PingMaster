@@ -19,7 +19,7 @@ def on_closing():
 
 root = tk.Tk()
 root.protocol("WM_DELETE_WINDOW", on_closing)
-root.title(("Ping Master - v.1.0"))
+root.title(("Ping Master - v.1.1"))
 root.geometry("1210x608+100+100")  # Создаем окно
 root.resizable(False, False)  # Запрещаем изменять размер окна
 root.configure(background='#ffffff')  # Устанавливаем цвет фона
