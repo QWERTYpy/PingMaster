@@ -9,6 +9,7 @@ class Object:
         self.ip_adr = ""  # IP адрес
         self.descr = ""  # Описание
         self.rect = ""  # Метка прямоугольника
+        self.red_oval = ""  # Метка для выделения отсутсвующих
         self.label = ""  # Метка надписи
         self.delta_x = delta_x  # Кратность
         self.ping_status = False  # True & False
@@ -55,6 +56,10 @@ class Object:
                              _y + self.delta_x)
             # Перемещаем метку
             self.root.coords(self.label, _x + self.delta_x, _y)
+            # Перемещаем выделение если есть
+            if self.red_oval:
+                self.root.coords(self.red_oval, _x - 2*self.delta_x, _y - 2*self.delta_x, _x + 2*self.delta_x,
+                             _y + 2*self.delta_x )
 
     def enter(self, event, element):
         # Когда курсор входит в зону объекта
@@ -97,5 +102,8 @@ class Object:
             # Если объект выделен, то изменяем позицию и прямоугольника
             self.root.coords(self.rect, self.tmp_x - delta_x, self.tmp_y - delta_x, self.tmp_x + delta_x,
                              self.tmp_y + delta_x)
+        if self.red_oval:
+            self.root.coords(self.red_oval, self.tmp_x - 2*delta_x, self.tmp_y - 2*delta_x, self.tmp_x + 2*delta_x,
+                             self.tmp_y + 2*delta_x)
         # Изменяем позицию метки
         self.root.coords(self.label, self.tmp_x+delta_x,self.tmp_y)

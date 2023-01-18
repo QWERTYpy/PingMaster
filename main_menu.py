@@ -34,9 +34,11 @@ class MainMenu:
     def del_object(self):
         # Удаляем объекты с канвы
         for _ in self.del_oblect.keys():
-            self.dict_object.pop(_) # Удаляем из словаря
+
             self.main_canvas.delete(self.del_oblect[_])  # Удаляем прямоугольник выделения
+            self.main_canvas.delete(self.dict_object[_].red_oval)  # Удаляем выделение
             self.main_canvas.delete(_)  # Удаляем объект
+            self.dict_object.pop(_)  # Удаляем из словаря
         self.del_oblect.clear()  # Очищаем словарь
         # Выводим служебное сообщение внизу слева
         self.info.title_left_down_text.set("Удалено")

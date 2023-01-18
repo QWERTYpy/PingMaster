@@ -11,8 +11,9 @@ class InfoFrame(tk.Frame):
         self.map = mainframe
         self.main_canvas = mainframe.main_canvas
         self.dict_object = dict_object
-        self.ms_time = 600000  # Задержка пинга 10 минут
+        self.ms_time = 1800000  # Задержка пинга 30 минут
         self.ms_time_delta = 0  # Накопитель для обратного отсчета
+        self.root = root
         super().__init__(root)
         if type_frame == 'info':  # Создаем информационное поле внизу слева
             self.load_info(map_width, map_height)
@@ -140,12 +141,22 @@ class InfoFrame(tk.Frame):
             if ping_result_bool:
                 # Если пинг прошел, отображаем значек зеленым
                 self.map.main_canvas.itemconfig(_, fill="green")
+                # Удаляем дополнительное очерчивание
+                self.main_canvas.delete(self.dict_object[_].red_oval)
+                self.dict_object[_].red_oval = ""
                 # Включаем флаг, что устройство на связи
                 if not self.dict_object[_].ping_status:
                     self.dict_object[_].ping_status = True
             else:
                 # Если нет - красным
                 self.map.main_canvas.itemconfig(_, fill="red")
+                # Дополнительно очерчиваем отсутсвующий объект
+                tmp_x = self.dict_object[_].x * self.dict_object[_].delta_x
+                tmp_y = self.dict_object[_].y * self.dict_object[_].delta_x
+                delta_x = self.dict_object[_].delta_x
+                self.dict_object[_].red_oval = self.main_canvas.create_oval(tmp_x-2*delta_x, tmp_y-2*delta_x,
+                                                                            tmp_x+2*delta_x, tmp_y+2*delta_x,
+                                                                            outline='orange', width=3)
                 # Выключаем флаг, что устройство на связи, записываем время ухода
                 if self.dict_object[_].ping_status:
                     self.dict_object[_].ping_status = False

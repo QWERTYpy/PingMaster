@@ -103,6 +103,8 @@ class MainFrame(tk.Frame):
         # Поднимаем все объекты над канвой
         for _ in self.dict_object.keys():
             self.main_canvas.tag_raise(_)
+            if self.dict_object[_].red_oval:
+                self.main_canvas.tag_raise(self.dict_object[_].red_oval)
             # Отображаем метки только если масштаб 4 и больше
             if self.delta_x > 3:
                 self.main_canvas.tag_raise(self.dict_object[_].label)
