@@ -194,8 +194,10 @@ class InfoFrame(tk.Frame):
                 time_delta = datetime.timedelta(hours=2)
                 if time_out < time_delta:
                     color_text = "new_warning"
+                    self.map.main_canvas.itemconfig(self.dict_object[__].red_oval, outline="red")
                 else:
                     color_text = "warning"
+                    self.map.main_canvas.itemconfig(self.dict_object[__].red_oval, outline="orange")
                 str_time_out = str(time_out)
                 if len(str_time_out) > 8:
                     str_day, str_time = str_time_out.split('days,')
