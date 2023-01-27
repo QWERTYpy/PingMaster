@@ -2,6 +2,7 @@
 import tkinter as tk
 import saveload as sl
 from description import Descr
+from window_history import History
 
 
 class MainMenu:
@@ -20,6 +21,15 @@ class MainMenu:
         self.main_menu.add_command(label="Удалить", command=self.del_object)
         self.main_menu.add_command(label="Редактировать", command=self.edit_object)
         self.main_menu.add_command(label="Обновить", command=self.reboot_object)
+        self.main_menu.add_command(label="История", command=self.history_object)
+
+    def history_object(self):
+            descr = History(self.root)
+            _, x, y = self.root.geometry().split('+')
+            descr.geometry(f"400x500+{int(x) + 100}+{int(y) + 100}")
+            descr.grab_set()
+            descr.wait_window()
+
 
     def reboot_object(self):
         # Включаем флаг на перезагрузку

@@ -115,18 +115,19 @@ class MainFrame(tk.Frame):
             self.main_canvas.tag_raise(self.del_object[_])
         # print(self.main_canvas.find_all())
 
-    def right_button_click(self, event, element = None):
+    def right_button_click(self, event): #, element = None):
         """
         Обработка правого щелчка мышки
+        !!!!!! Исправить убрать else
         :param event:
         :return:
         """
         self.right_menu = tk.Menu(self.main_canvas, tearoff=0)
-        if element is None:
-            self.right_menu.add_command(label="Создать", command=self.create_object)
-        else:
-            self.right_menu.add_command(label="Удалить", command=lambda el=element: self.del_object(el))
-                                        # command=self.del_object)
+        # if element is None:
+        self.right_menu.add_command(label="Создать", command=self.create_object)
+        # else:
+        #     self.right_menu.add_command(label="Удалить", command=lambda el=element: self.del_object(el))
+        #                                 # command=self.del_object)
         self.position_cursor_old_x = event.x
         self.position_cursor_old_y = event.y
         self.right_menu.post(event.x_root, event.y_root)
