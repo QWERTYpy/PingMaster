@@ -203,7 +203,10 @@ class InfoFrame(tk.Frame):
                     self.map.main_canvas.itemconfig(self.dict_object[__].red_oval, outline="orange")
                 str_time_out = str(time_out)
                 if len(str_time_out) > 8:
-                    str_day, str_time = str_time_out.split('days,')
+                    if 'days,' in str_time_out:
+                        str_day, str_time = str_time_out.split('days,')
+                    if 'day,' in str_time_out:
+                        str_day, str_time = str_time_out.split('day,')
                     str_day = str_day.strip()
                     str_time = str_time.strip()
                     str_time_out = f"{str_day}д. {str_time[:-3]}"
