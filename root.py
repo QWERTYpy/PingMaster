@@ -4,6 +4,7 @@ from main_frame import MainFrame
 from main_menu import MainMenu
 from info_frame import InfoFrame
 import saveload as sl
+import history as hs
 
 
 # Создаем словарь для хранения созданных объектов
@@ -16,7 +17,7 @@ def on_closing():
 
 
 
-
+hs.folder_exist()  # Проверяем существует ли папка для логов
 root = tk.Tk()
 root.protocol("WM_DELETE_WINDOW", on_closing)
 root.title(("Ping Master - v.1.2"))

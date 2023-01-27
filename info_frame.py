@@ -3,6 +3,7 @@ import tkinter as tk
 from ping3 import ping
 import datetime
 import threading
+import  history as hs
 
 
 class InfoFrame(tk.Frame):
@@ -147,6 +148,7 @@ class InfoFrame(tk.Frame):
                 # Включаем флаг, что устройство на связи
                 if not self.dict_object[_].ping_status:
                     self.dict_object[_].ping_status = True
+                    hs.add_in_log(f"{self.dict_object[_].ip_adr} - ON - {time.time()}")
             else:
                 # Если нет - красным
                 self.map.main_canvas.itemconfig(_, fill="red")
@@ -161,6 +163,7 @@ class InfoFrame(tk.Frame):
                 if self.dict_object[_].ping_status:
                     self.dict_object[_].ping_status = False
                     self.dict_object[_].ping_off = time.time()
+                    hs.add_in_log(f"{self.dict_object[_].ip_adr} - OFF - {self.dict_object[_].ping_off}")
             # Обновляем данные в таблице
             self.ping_object_info()
             # Обновляем данные в поле статистики
