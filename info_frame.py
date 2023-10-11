@@ -3,7 +3,7 @@ import tkinter as tk
 from ping3 import ping
 import datetime
 import threading
-import  history as hs
+import history as hs
 
 
 class InfoFrame(tk.Frame):
@@ -46,7 +46,6 @@ class InfoFrame(tk.Frame):
                                         textvariable=self.title_left_down_text)
         self.title_left_down.place(relx=0, rely=0)
 
-
     def load_stat(self, map_width, map_height):
         """
         Создаем информационное поле для вывода статистики по объектам
@@ -58,8 +57,8 @@ class InfoFrame(tk.Frame):
         frame_map = tk.Frame(bg='gray90', bd=2)
         frame_map.place(x=350, y=585, width=map_width, height=map_height)
         # Добавляем информационное поле
-        self.stat = tk.Text(frame_map,width=40, height=1)
-        self.stat.tag_config('on', font=('Times New Roman',10,'bold'), foreground="green" )
+        self.stat = tk.Text(frame_map, width=40, height=1)
+        self.stat.tag_config('on', font=('Times New Roman', 10, 'bold'), foreground="green")
         self.stat.tag_config('off', font=('Times New Roman', 10, 'bold'), foreground="red")
         self.stat.tag_config('all', font=('Times New Roman', 10, 'bold'), foreground="black")
         self.stat.place(relx=0, rely=0)
@@ -75,7 +74,7 @@ class InfoFrame(tk.Frame):
         frame_map = tk.Frame(bg='gray90', bd=2)
         frame_map.place(x=1025, y=400, width=map_width, height=map_height)
         self.obj_info_text = tk.Text(frame_map, width=20, height=10)
-        self.obj_info_text.tag_config('head', font=('Times New Roman',12,'bold'))
+        self.obj_info_text.tag_config('head', font=('Times New Roman', 12, 'bold'))
         self.obj_info_text.place(relx=0, rely=0)
 
     def ping_info(self, map_width, map_height):
@@ -105,7 +104,7 @@ class InfoFrame(tk.Frame):
             self.ping_status = True  # Включаем флаг, что запущен пинг устройств
             self.ping_thread = threading.Thread(target=self.ping_object)
             self.ping_thread.start()
-        self.aft_ping = self.after(self.ms_time,self.start_ping)
+        self.aft_ping = self.after(self.ms_time, self.start_ping)
 
     def ping_timer(self):
         """
@@ -119,7 +118,7 @@ class InfoFrame(tk.Frame):
             self.start_ping()  # Запускаем новую итерацию
 
         if not self.ping_status:  # Если не производится пинг, то выводим обратный отсчет
-            print_time = self.ms_time/1000-self.ms_time_delta
+            print_time = self.ms_time / 1000 - self.ms_time_delta
             self.info.title_left_down_text.set(f"Осталось: {int(print_time)} c.")
             self.ms_time_delta += 1
         # Взводим таймер на 1 секунду
@@ -156,8 +155,8 @@ class InfoFrame(tk.Frame):
                 tmp_x = self.dict_object[_].x * self.dict_object[_].delta_x
                 tmp_y = self.dict_object[_].y * self.dict_object[_].delta_x
                 delta_x = self.dict_object[_].delta_x
-                self.dict_object[_].red_oval = self.main_canvas.create_oval(tmp_x-2*delta_x, tmp_y-2*delta_x,
-                                                                            tmp_x+2*delta_x, tmp_y+2*delta_x,
+                self.dict_object[_].red_oval = self.main_canvas.create_oval(tmp_x - 2 * delta_x, tmp_y - 2 * delta_x,
+                                                                            tmp_x + 2 * delta_x, tmp_y + 2 * delta_x,
                                                                             outline='orange', width=3)
                 # Выключаем флаг, что устройство на связи, записываем время ухода
                 if self.dict_object[_].ping_status:
@@ -169,7 +168,8 @@ class InfoFrame(tk.Frame):
             # Обновляем данные в поле статистики
             self.stat_info()
             # Обновлаяем данные о количестве
-            self.info.title_left_down_text.set(f"Выполняется опрос устройств ... {count_dict_object} из {len_dict_object}")
+            self.info.title_left_down_text.set(
+                f"Выполняется опрос устройств ... {count_dict_object} из {len_dict_object}")
 
         # Выключаем флаг, что идет опрос устройств
         self.ping_status = False
@@ -211,15 +211,15 @@ class InfoFrame(tk.Frame):
                     str_time = str_time.strip()
                     str_time_out = f"{str_day}д. {str_time[:-3]}"
                 self.text_right_info.insert(tk.INSERT,
-                                                 f"{self.dict_object[__].ip_adr:7}-{str_time_out}\n",
-                                                 color_text)
+                                            f"{self.dict_object[__].ip_adr:7}-{str_time_out}\n",
+                                            color_text)
         self.text_right_info.configure(state='disabled')
         # self.text_right_info.update()
         # self.main_canvas.update()
 
     def button_b1(self, event):
         # print(event.x, event.y)
-        if len(self.text_right_info.get(1.0, tk.END))-1:
+        if len(self.text_right_info.get(1.0, tk.END)) - 1:
             # Получаем номер строки из координат курсора
             index, _ = event.widget.index("@%s,%s" % (event.x, event.y)).split('.')
             # Получаем строку и отделяем IP
@@ -232,7 +232,7 @@ class InfoFrame(tk.Frame):
                 if self.dict_object[_].ip_adr == self.object_name:
                     self.obj_info.obj_info_text.configure(state='normal')
                     self.obj_info.obj_info_text.delete(1.0, tk.END)
-                    self.obj_info.obj_info_text.insert(tk.INSERT,"IP Адрес\n", 'head')
+                    self.obj_info.obj_info_text.insert(tk.INSERT, "IP Адрес\n", 'head')
                     self.obj_info.obj_info_text.insert(tk.INSERT, f"10.64.{self.dict_object[_].ip_adr}\n")
                     self.obj_info.obj_info_text.insert(tk.INSERT, "Описание\n", 'head')
                     self.obj_info.obj_info_text.insert(tk.INSERT, f"{self.dict_object[_].descr}\n")
@@ -242,11 +242,9 @@ class InfoFrame(tk.Frame):
                     # Создаем анимацию на канве для отображения места объекта
                     for _crat in range(200, 0, -4):
                         if _crat == 200:
-                            rect = self.main_canvas.create_rectangle(_x-_crat, _y-_crat, _x1+_crat, _y1+_crat)
+                            rect = self.main_canvas.create_rectangle(_x - _crat, _y - _crat, _x1 + _crat, _y1 + _crat)
                         else:
-                            self.main_canvas.coords(rect, _x-_crat, _y-_crat, _x1+_crat, _y1+_crat)
+                            self.main_canvas.coords(rect, _x - _crat, _y - _crat, _x1 + _crat, _y1 + _crat)
                             self.main_canvas.update()
                             time.sleep(0.005)
                     self.main_canvas.delete(rect)
-
-

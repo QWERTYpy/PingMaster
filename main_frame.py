@@ -9,6 +9,8 @@ from description import Descr
 import saveload as sl
 import threading
 import time
+
+
 # Создает основное окно
 
 class MainFrame(tk.Frame):
@@ -26,7 +28,7 @@ class MainFrame(tk.Frame):
     def load_map(self, map_width, map_height):
         # Загружаем карту
         frame_map = tk.Frame(bg='white', bd=2)
-        frame_map.place(x=0, y=0, width=map_width+25, height=map_height+25)
+        frame_map.place(x=0, y=0, width=map_width + 25, height=map_height + 25)
         # Создаем ползунки
         self.main_vscroll = tk.Scrollbar(frame_map, orient=tk.VERTICAL)
         self.main_hscroll = tk.Scrollbar(frame_map, orient=tk.HORIZONTAL)
@@ -70,7 +72,7 @@ class MainFrame(tk.Frame):
         self.main_canvas.bind("<MouseWheel>", self.mousewheel)
         self.main_canvas.bind("<Button-3>", self.right_button_click)
 
-    def mousewheel(self,event):
+    def mousewheel(self, event):
         """
         Действия при прокрутке ролика мышки
         :param event:
@@ -80,16 +82,16 @@ class MainFrame(tk.Frame):
         width = self.main_images_copy.width
         # Если надо увеличить и текущий размер меньше размера картинки
         if event.delta > 0 and width < self.main_images.width:
-            images_resize_h = height*2
-            images_resize_w = (height*2) * self.im_ratio
+            images_resize_h = height * 2
+            images_resize_w = (height * 2) * self.im_ratio
             self.delta_x *= 2
             for _ in self.dict_object.keys():
                 self.dict_object[_].resize(self.delta_x)
         # Если надо уменьшить и текущий размер больше размера окна
         elif event.delta < 0 and width > self.main_window_w:
-            self.delta_x/=2
-            images_resize_h = height/2
-            images_resize_w = height*self.im_ratio/2
+            self.delta_x /= 2
+            images_resize_h = height / 2
+            images_resize_w = height * self.im_ratio / 2
             for _ in self.dict_object.keys():
                 self.dict_object[_].resize(self.delta_x)
         else:
@@ -115,7 +117,7 @@ class MainFrame(tk.Frame):
             self.main_canvas.tag_raise(self.del_object[_])
         # print(self.main_canvas.find_all())
 
-    def right_button_click(self, event): #, element = None):
+    def right_button_click(self, event):  # , element = None):
         """
         Обработка правого щелчка мышки
         !!!!!! Исправить убрать else
@@ -132,7 +134,6 @@ class MainFrame(tk.Frame):
         self.position_cursor_old_y = event.y
         self.right_menu.post(event.x_root, event.y_root)
 
-
     def create_object(self):
         """
         Создание новых объектов
@@ -144,17 +145,16 @@ class MainFrame(tk.Frame):
         # Отображаем окно для ввода дополнительной информации
         descr = Descr(self.root)
         _, x, y = self.root.geometry().split('+')
-        descr.geometry(f"200x180+{self.position_cursor_old_x+int(x)+10}+{self.position_cursor_old_y+int(y)}")
+        descr.geometry(f"200x180+{self.position_cursor_old_x + int(x) + 10}+{self.position_cursor_old_y + int(y)}")
         descr.grab_set()
         descr.wait_window()
         # print(descr.button)
         # Если в форме была нажата кнопка создать
         if descr.button:
-            new_device = Object(self.main_canvas, self.set_position_x, self.set_position_y, self.delta_x, self.del_object)
-            new_device.label = self.main_canvas.create_text(self.set_position_x+self.delta_x, self.set_position_y, anchor='w', text=descr.ip_adr)
+            new_device = Object(self.main_canvas, self.set_position_x, self.set_position_y, self.delta_x,
+                                self.del_object)
+            new_device.label = self.main_canvas.create_text(self.set_position_x + self.delta_x, self.set_position_y,
+                                                            anchor='w', text=descr.ip_adr)
             new_device.ip_adr = descr.ip_adr
             new_device.descr = descr.descr
             self.dict_object[new_device.oval] = new_device
-
-
-

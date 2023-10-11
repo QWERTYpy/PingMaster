@@ -47,7 +47,7 @@ class History(tk.Toplevel):
         history_files = os.listdir('history')
         history_files = [_[:-4] for _ in history_files]
         history_files = history_files[-5:]
-        return  history_files
+        return history_files
 
 
 
