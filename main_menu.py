@@ -56,14 +56,16 @@ class MainMenu:
     def edit_object(self):
         # Редактирование описания объектов
         for obj in self.del_oblect.keys():
-            descr = Descr(self.root, ip_adr=self.dict_object[obj].ip_adr, descr=self.dict_object[obj].descr)
+            # print(self.dict_object[obj].work_status)
+            descr = Descr(self.root, ip_adr=self.dict_object[obj].ip_adr, descr=self.dict_object[obj].descr, work = self.dict_object[obj].work_status)
             _, x, y = self.root.geometry().split('+')
-            descr.geometry(f"200x180+{int(x) + 100}+{int(y)+100}")
+            descr.geometry(f"200x200+{int(x) + 100}+{int(y)+100}")
             descr.grab_set()
             descr.wait_window()
             # Если в форме была нажата кнопка сохранить
             if descr.button:
                 self.dict_object[obj].ip_adr = descr.ip_adr
                 self.dict_object[obj].descr = descr.descr
+                self.dict_object[obj].work_status = descr.work_status
                 self.main_canvas.itemconfigure(self.dict_object[obj].label, text=descr.ip_adr)
                 self.info.title_left_down_text.set("Описание изменено")

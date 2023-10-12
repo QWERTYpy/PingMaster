@@ -134,7 +134,7 @@ class InfoFrame(tk.Frame):
         # Обновляем статистику по объектам
         self.stat_info()
         for _ in self.dict_object.keys():
-            if self.map.reboot_ping:  # Если нашата клавиша Обновить, то прерываем опрос
+            if self.map.reboot_ping:  # Если нажата клавиша Обновить, то прерываем опрос
                 break
             count_dict_object += 1
             # Составляем IP адрес устройства и пингуем его

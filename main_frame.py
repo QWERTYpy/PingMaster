@@ -57,6 +57,7 @@ class MainFrame(tk.Frame):
             new_device.descr = _[3]
             new_device.ping_status = _[4]
             new_device.ping_off = _[5]
+            new_device.work_status = _[6]
             # Проверяем предыдущий статус объкта
             if new_device.ping_status:
                 self.main_canvas.itemconfig(new_device.oval, fill="green")
@@ -93,7 +94,7 @@ class MainFrame(tk.Frame):
             return
 
         size = (int(images_resize_w), int(images_resize_h))
-        self.main_images_copy = self.main_images.resize(size, Image.ANTIALIAS)
+        self.main_images_copy = self.main_images.resize(size, Image.LANCZOS)
         self.main_canvas.config(scrollregion=f"0 0 {self.main_images_copy.width} {self.main_images_copy.height}")
         self.main_images_pi = ImageTk.PhotoImage(self.main_images_copy)
         self.main_canvas.create_image(0, 0, anchor='nw', image=self.main_images_pi)
@@ -140,7 +141,7 @@ class MainFrame(tk.Frame):
         # Отображаем окно для ввода дополнительной информации
         descr = Descr(self.root)
         _, x, y = self.root.geometry().split('+')
-        descr.geometry(f"200x180+{self.position_cursor_old_x + int(x) + 10}+{self.position_cursor_old_y + int(y)}")
+        descr.geometry(f"200x200+{self.position_cursor_old_x + int(x) + 10}+{self.position_cursor_old_y + int(y)}")
         descr.grab_set()
         descr.wait_window()
         # print(descr.button)
@@ -152,4 +153,5 @@ class MainFrame(tk.Frame):
                                                             anchor='w', text=descr.ip_adr)
             new_device.ip_adr = descr.ip_adr
             new_device.descr = descr.descr
+            new_device.work_status = descr.work_status
             self.dict_object[new_device.oval] = new_device

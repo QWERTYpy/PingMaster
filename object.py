@@ -13,6 +13,7 @@ class Object:
         self.label = ""  # Метка надписи
         self.delta_x = delta_x  # Кратность
         self.ping_status = False  # True & False
+        self.work_status = True  # True & False
         self.ping_off = time.time()  # Date and Time
         # Создание нового объекта и назначение ему обработчиков
         self.root = root
