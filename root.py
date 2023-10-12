@@ -21,15 +21,15 @@ hs.folder_exist()  # Проверяем существует ли папка д�
 root = tk.Tk()
 root.protocol("WM_DELETE_WINDOW", on_closing)
 root.title(("Ping Master - v.1.3"))
-root.geometry("1210x608+100+100")  # Создаем окно
+root.geometry("1250x608+100+100")  # Создаем окно
 root.resizable(False, False)  # Запрещаем изменять размер окна
 root.configure(background='#ffffff')  # Устанавливаем цвет фона
 
 map = MainFrame(root, 1000, 560, dict_object, del_object)
 info = InfoFrame('info', root, map, dict_object, 1200, 20)  # Инфополе внизу слева
 stat = InfoFrame('stat', root, map, dict_object, 1200, 20)  # Статистика внизу
-obj_info = InfoFrame('obj', root, map, dict_object, 180, 180)  # Информация справа
-text_ping = InfoFrame('ping', root, map, dict_object, 180, 400, obj_info, info, stat)  # Информация о пинге
+obj_info = InfoFrame('obj', root, map, dict_object, 220, 180)  # Информация справа
+text_ping = InfoFrame('ping', root, map, dict_object, 220, 400, obj_info, info, stat)  # Информация о пинге
 mm = MainMenu(root, map, info, dict_object, del_object)
 root.mainloop()  # Запускаем отображение
 sys.exit()

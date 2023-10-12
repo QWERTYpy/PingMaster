@@ -1,14 +1,9 @@
 # Создание интерфейса пользователя
-import os.path
 import tkinter as tk
 from PIL import Image, ImageTk
-# from device import Device
 from object import Object
-from main_menu import MainMenu
 from description import Descr
 import saveload as sl
-import threading
-import time
 
 
 # Создает основное окно
@@ -21,7 +16,7 @@ class MainFrame(tk.Frame):
         self.delta = 2  # Коэффициент увеличения
         self.delta_x = 1  # Текущая кратность
         self.dict_object = dict_object  # Словарь с созданными объектами
-        self.del_object = del_object
+        self.del_object = del_object  # Словарь с объектами на удаление
         self.reboot_ping = False
         self.load_map(map_width, map_height)
 

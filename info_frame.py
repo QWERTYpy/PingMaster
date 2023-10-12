@@ -4,6 +4,7 @@ from ping3 import ping
 import datetime
 import threading
 import history as hs
+from object import Object
 
 
 class InfoFrame(tk.Frame):
@@ -11,7 +12,7 @@ class InfoFrame(tk.Frame):
                  obj_info=None, inform=None, stat=None):
         self.map = mainframe
         self.main_canvas = mainframe.main_canvas
-        self.dict_object = dict_object
+        self.dict_object: dict[int, Object] = dict_object
         self.ms_time = 1800000  # Задержка пинга 30 минут
         self.ms_time_delta = 0  # Накопитель для обратного отсчета
         self.root = root
@@ -73,7 +74,7 @@ class InfoFrame(tk.Frame):
         # Создаем информационное поле для вывода информации о объекте
         frame_map = tk.Frame(bg='gray90', bd=2)
         frame_map.place(x=1025, y=400, width=map_width, height=map_height)
-        self.obj_info_text = tk.Text(frame_map, width=20, height=10)
+        self.obj_info_text = tk.Text(frame_map, width=26, height=10)
         self.obj_info_text.tag_config('head', font=('Times New Roman', 12, 'bold'))
         self.obj_info_text.place(relx=0, rely=0)
 
@@ -84,7 +85,7 @@ class InfoFrame(tk.Frame):
         # Создаем скролл для прокрутки сообщений
         self.scroll = tk.Scrollbar(frame_map, orient=tk.VERTICAL)
         # Создаем текствое поле для ввода информации о пингах
-        self.text_right_info = tk.Text(frame_map, width=19, height=24, yscrollcommand=self.scroll.set)
+        self.text_right_info = tk.Text(frame_map, width=24, height=24, yscrollcommand=self.scroll.set)
         # Создаем теги для цветового оформления текста
         self.text_right_info.tag_config('warning', background="yellow", foreground="red")
         self.text_right_info.tag_config('new_warning', background="red", foreground="yellow")
@@ -189,29 +190,35 @@ class InfoFrame(tk.Frame):
         self.stat.stat.insert(tk.INSERT, f"Отсутсвуют: {off}  ", 'off')
 
     def ping_object_info(self):
+        # Отображение статистики устройств
         self.text_right_info.configure(state='normal')
         self.text_right_info.delete(1.0, tk.END)
-        for __ in self.dict_object.keys():
-            if not self.dict_object[__].ping_status:
-                time_out = datetime.timedelta(seconds=int(time.time() - self.dict_object[__].ping_off))
-                time_delta = datetime.timedelta(hours=2)
-                if time_out < time_delta:
-                    color_text = "new_warning"
-                    self.map.main_canvas.itemconfig(self.dict_object[__].red_oval, outline="red")
-                else:
-                    color_text = "warning"
-                    self.map.main_canvas.itemconfig(self.dict_object[__].red_oval, outline="orange")
-                str_time_out = str(time_out)
-                if len(str_time_out) > 8:
-                    if 'days,' in str_time_out:
-                        str_day, str_time = str_time_out.split('days,')
-                    if 'day,' in str_time_out:
-                        str_day, str_time = str_time_out.split('day,')
-                    str_day = str_day.strip()
-                    str_time = str_time.strip()
-                    str_time_out = f"{str_day}д. {str_time[:-3]}"
-                self.text_right_info.insert(tk.INSERT,
-                                            f"{self.dict_object[__].ip_adr:7}-{str_time_out}\n",
+
+        _dict_ping_info = {}
+        for __ in self.dict_object.values():
+            if not __.ping_status:
+                _dict_ping_info[__.ip_adr] = [__.ping_off, __.oval]
+
+        # print(_dict_ping_info)
+        # sorted_people = sorted(people.items(), key=lambda item: item[1])
+        _dict_ping_info = sorted(_dict_ping_info.items(), key=lambda item: item[1][0], reverse=True)
+        # print(_dict_ping_info)
+
+        for __ in _dict_ping_info:
+            time_out = datetime.timedelta(seconds=int(time.time() - __[1][0]))
+            time_delta = datetime.timedelta(hours=2)
+            if time_out < time_delta:
+                color_text = "new_warning"
+                self.map.main_canvas.itemconfig(self.dict_object[__[1][1]].red_oval, outline="red")
+            else:
+                color_text = "warning"
+                self.map.main_canvas.itemconfig(self.dict_object[__[1][1]].red_oval, outline="orange")
+
+            _str_day = time_out.days
+            _str_time = time.strftime("%H:%M:%S", time.gmtime(time_out.seconds))
+            str_time_out = f"{_str_day:4} д. {_str_time[:-3]}"
+            self.text_right_info.insert(tk.INSERT,
+                                            f"{__[0]:7} - {str_time_out}\n",
                                             color_text)
         self.text_right_info.configure(state='disabled')
         # self.text_right_info.update()
