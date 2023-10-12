@@ -113,10 +113,11 @@ class InfoFrame(tk.Frame):
         :return:
         """
         # Проверка флага на принудительный запуск пинга
-        if self.map.reboot_ping:
-            self.map.reboot_ping = False  # Восстанавливаем флаг
-            self.after_cancel(self.aft_ping)  # Отменяем отложенный запуск
-            self.start_ping()  # Запускаем новую итерацию
+        if self.map.reboot_ping:  # Если нажата клавиша Обновить
+            if not self.ping_status:  # Если пинг сейчас не выполняется
+                self.map.reboot_ping = False  # Восстанавливаем флаг
+                self.after_cancel(self.aft_ping)  # Отменяем отложенный запуск
+                self.start_ping()  # Запускаем новую итерацию
 
         if not self.ping_status:  # Если не производится пинг, то выводим обратный отсчет
             print_time = self.ms_time / 1000 - self.ms_time_delta
@@ -133,6 +134,8 @@ class InfoFrame(tk.Frame):
         # Обновляем статистику по объектам
         self.stat_info()
         for _ in self.dict_object.keys():
+            if self.map.reboot_ping:  # Если нашата клавиша Обновить, то прерываем опрос
+                break
             count_dict_object += 1
             # Составляем IP адрес устройства и пингуем его
             ping_result = ping("10.64." + self.dict_object[_].ip_adr)
