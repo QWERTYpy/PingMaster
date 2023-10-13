@@ -20,9 +20,12 @@ class Object:
         self.red_oval = ""  # Метка для выделения отсутствующих
         _set_position_x = int(float(ini_block[1]))
         _set_position_y = int(float(ini_block[2]))
-        self.label = self.main_canvas.create_text(_set_position_x, _set_position_y, anchor='w', text=ini_block[0])  # Метка надписи
+        self.label = self.main_canvas.create_text(_set_position_x+delta_x, _set_position_y, anchor='w', text=ini_block[0])  # Метка надписи
         self.main_canvas.tag_lower(self.label)
+
         self.delta_x = delta_x  # Кратность
+        if self.delta_x >= 4:
+            self.main_canvas.tag_raise(self.label)
         self.ping_status = ini_block[4]  # True & False
         self.work_status = ini_block[6]  # True & False
         self.ping_off = ini_block[5]  # Date and Time

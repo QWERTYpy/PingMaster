@@ -58,7 +58,7 @@ class MainMenu:
         # Редактирование описания объектов
         for obj in self.objectDict.dict_del_object.keys():
             # print(self.dict_object[obj].work_status)
-            descr = Descr(self.root,self.objectDict.dict_object[obj].delta_x,
+            descr = Descr(self.main_canvas,self.objectDict.dict_object[obj].delta_x,
                           [self.objectDict.dict_object[obj].x,self.objectDict.dict_object[obj].y],
                           obj,
                           self.objectDict)

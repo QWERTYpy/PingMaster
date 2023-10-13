@@ -55,13 +55,15 @@ class Descr(tk.Toplevel):
                      False,
                      0,
                      (True, False)[self.chk_enabled.get() == self.enabled_off]]
-        if self.element:
+        if self.element:  # Если был передан номер элемента, то редактируем его
             self.objectDict.dict_object[self.element].ip_adr = ini_block[0]
             self.objectDict.dict_object[self.element].descr = ini_block[3]
             self.objectDict.dict_object[self.element].work_status = ini_block[6]
-        else:
+            self.main_canvas.itemconfigure(self.objectDict.dict_object[self.element].label, text=ini_block[0])
+        else:  # Если нет, то создаем новый Объект
             new_device = Object(self.main_canvas, ini_block, self.delta_x, self.objectDict)
             self.objectDict.dict_object[new_device.oval] = new_device
+
         self.destroy()
 
     def button_cansel(self):
