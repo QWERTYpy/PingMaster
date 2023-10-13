@@ -32,8 +32,12 @@ def load_ini():
 
     for ip_adr in config.sections():
 
-        list_obj.append([ip_adr, config[ip_adr]['x'], config[ip_adr]['y'], config[ip_adr]['descr'],
-                         (True, False)[config[ip_adr]['ping_status'] == 'False'], float(config[ip_adr]['ping_off']),
+        list_obj.append([ip_adr,
+                         config[ip_adr]['x'],
+                         config[ip_adr]['y'],
+                         config[ip_adr]['descr'],
+                         (True, False)[config[ip_adr]['ping_status'] == 'False'],
+                         float(config[ip_adr]['ping_off']),
                          ((True, False)[config.get(ip_adr, 'work_status', fallback='True') == 'False'])])
     print(list_obj)
     return list_obj

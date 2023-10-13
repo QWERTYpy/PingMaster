@@ -1,18 +1,19 @@
 import time
 import tkinter as tk
-from ping3 import ping
+# from ping3 import ping
 import datetime
 import threading
 import history as hs
-from object import Object
+from object import Object, ObjectDict
 
 
 class InfoFrame(tk.Frame):
-    def __init__(self, type_frame, root, mainframe, dict_object, map_width, map_height,
+    def __init__(self, type_frame, root, mainframe, objectDict: ObjectDict, map_width, map_height,
                  obj_info=None, inform=None, stat=None):
         self.map = mainframe
+        self.reboot_ping = objectDict.reboot_ping
         self.main_canvas = mainframe.main_canvas
-        self.dict_object: dict[int, Object] = dict_object
+        self.dict_object: dict[int, Object] = objectDict.dict_object
         self.ms_time = 1800000  # Задержка пинга 30 минут
         self.ms_time_delta = 0  # Накопитель для обратного отсчета
         self.root = root
@@ -113,9 +114,9 @@ class InfoFrame(tk.Frame):
         :return:
         """
         # Проверка флага на принудительный запуск пинга
-        if self.map.reboot_ping:  # Если нажата клавиша Обновить
+        if self.reboot_ping:  # Если нажата клавиша Обновить
             if not self.ping_status:  # Если пинг сейчас не выполняется
-                self.map.reboot_ping = False  # Восстанавливаем флаг
+                self.reboot_ping = False  # Восстанавливаем флаг
                 self.after_cancel(self.aft_ping)  # Отменяем отложенный запуск
                 self.start_ping()  # Запускаем новую итерацию
 
@@ -134,11 +135,11 @@ class InfoFrame(tk.Frame):
         # Обновляем статистику по объектам
         self.stat_info()
         for _ in self.dict_object.keys():
-            if self.map.reboot_ping:  # Если нажата клавиша Обновить, то прерываем опрос
+            if self.reboot_ping:  # Если нажата клавиша Обновить, то прерываем опрос
                 break
             count_dict_object += 1
             # Составляем IP адрес устройства и пингуем его
-            ping_result = ping("10.64." + self.dict_object[_].ip_adr)
+            ping_result = 0.1  # ping("10.64." + self.dict_object[_].ip_adr)
             ping_result_bool = True  # Пинг прошёл
             if ping_result is None or type(ping_result) is not float:
                 ping_result_bool = False
