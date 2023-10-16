@@ -18,6 +18,7 @@ class Object:
         self.descr = ini_block[3]  # Описание
         self.rect = ""  # Метка прямоугольника
         self.red_oval = ""  # Метка для выделения отсутствующих
+        self.grey_oval = ""  # Метка для выделения отключенных
         _set_position_x = int(float(ini_block[1]))
         _set_position_y = int(float(ini_block[2]))
         self.label = self.main_canvas.create_text(_set_position_x+delta_x, _set_position_y, anchor='w', text=ini_block[0])  # Метка надписи
@@ -116,12 +117,50 @@ class Object:
         if self.red_oval:
             self.main_canvas.coords(self.red_oval, self.tmp_x - 2*delta_x, self.tmp_y - 2*delta_x, self.tmp_x + 2*delta_x,
                              self.tmp_y + 2*delta_x)
+        if self.grey_oval:
+            self.main_canvas.coords(self.grey_oval, self.tmp_x - 2 * delta_x, self.tmp_y - 2 * delta_x,
+                                    self.tmp_x + 2 * delta_x, self.tmp_y + 2 * delta_x)
         # Изменяем позицию метки
         self.main_canvas.coords(self.label, self.tmp_x+delta_x,self.tmp_y)
 
-    def setcolor(self):
+    def setcolor_RG(self):
         if self.ping_status:
             self.main_canvas.itemconfig(self.oval, fill="green")
+            # Удаляем дополнительное очерчивание
+            self.main_canvas.delete(self.red_oval)
+            self.red_oval = ""
         else:
             self.main_canvas.itemconfig(self.oval, fill="red")
+            tmp_x = self.x * self.delta_x
+            tmp_y = self.y * self.delta_x
+            delta_x = self.delta_x
+            self.red_oval = self.main_canvas.create_oval(tmp_x - 2 * delta_x, tmp_y - 2 * delta_x,
+                                                                        tmp_x + 2 * delta_x, tmp_y + 2 * delta_x,
+                                                                        outline='orange', width=3)
 
+    def setcolor_grey(self):
+        if not self.work_status:
+            self.main_canvas.itemconfig(self.oval, fill="grey")
+            tmp_x = self.x * self.delta_x
+            tmp_y = self.y * self.delta_x
+            delta_x = self.delta_x
+            self.grey_oval = self.main_canvas.create_oval(tmp_x - 2 * delta_x, tmp_y - 2 * delta_x,
+                                                         tmp_x + 2 * delta_x, tmp_y + 2 * delta_x,
+                                                         outline='grey', width=3)
+            if self.red_oval:
+                self.main_canvas.delete(self.red_oval)
+                self.red_oval = ""
+        else:
+            self.main_canvas.delete(self.grey_oval)
+            self.grey_oval = ""
+
+    def up_line(self):
+        if self.red_oval:
+            self.main_canvas.tag_raise(self.red_oval)
+        if self.grey_oval:
+            self.main_canvas.tag_raise(self.grey_oval)
+        # Отображаем метки только если масштаб 4 и больше
+        if self.delta_x > 3:
+            self.main_canvas.tag_raise(self.label)
+        else:
+            self.main_canvas.tag_lower(self.label)

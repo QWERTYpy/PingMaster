@@ -49,7 +49,8 @@ class MainFrame(tk.Frame):
         # Загружаем объекты из файла конфигурации
         for ini_block in sl.load_ini():
             new_device = Object(self.main_canvas, ini_block, self.delta_x, self.objectDict)
-            new_device.setcolor()  # Устанавливаем цвет метки
+            new_device.setcolor_RG()  # Устанавливаем цвет метки
+            new_device.setcolor_grey()  # Помечаем отсутсвующие
             self.objectDict.dict_object[new_device.oval] = new_device  # Добавляем созданное устройство в словарь
         # Задаем реакции
         self.main_canvas.bind("<MouseWheel>", self.mousewheel)
@@ -88,13 +89,7 @@ class MainFrame(tk.Frame):
         # Поднимаем все объекты над канвой
         for _ in self.objectDict.dict_object.keys():
             self.main_canvas.tag_raise(_)
-            if self.objectDict.dict_object[_].red_oval:
-                self.main_canvas.tag_raise(self.objectDict.dict_object[_].red_oval)
-            # Отображаем метки только если масштаб 4 и больше
-            if self.delta_x > 3:
-                self.main_canvas.tag_raise(self.objectDict.dict_object[_].label)
-            else:
-                self.main_canvas.tag_lower(self.objectDict.dict_object[_].label)
+            self.objectDict.dict_object[_].up_line()
         # Поднимаем выделение
         for _ in self.objectDict.dict_del_object.keys():
             self.main_canvas.tag_raise(self.objectDict.dict_del_object[_])

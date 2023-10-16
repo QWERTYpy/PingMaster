@@ -33,7 +33,7 @@ class MainMenu:
 
     def reboot_object(self):
         # Включаем флаг на перезагрузку
-        self.map.reboot_ping = True
+        self.objectDict.reboot_ping = True
 
     def save_object(self):
         # Сохраняем объекты
