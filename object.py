@@ -134,9 +134,10 @@ class Object:
             tmp_x = self.x * self.delta_x
             tmp_y = self.y * self.delta_x
             delta_x = self.delta_x
-            self.red_oval = self.main_canvas.create_oval(tmp_x - 2 * delta_x, tmp_y - 2 * delta_x,
-                                                                        tmp_x + 2 * delta_x, tmp_y + 2 * delta_x,
-                                                                        outline='orange', width=3)
+            if not self.red_oval:
+                self.red_oval = self.main_canvas.create_oval(tmp_x - 2 * delta_x, tmp_y - 2 * delta_x,
+                                                                            tmp_x + 2 * delta_x, tmp_y + 2 * delta_x,
+                                                                            outline='orange', width=3)
 
     def setcolor_grey(self):
         if not self.work_status:

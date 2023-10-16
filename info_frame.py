@@ -215,6 +215,7 @@ class InfoFrame(tk.Frame):
         for __ in _dict_ping_info:
             time_out = datetime.timedelta(seconds=int(time.time() - __[1][0]))
             time_delta = datetime.timedelta(hours=2)
+            # print(__[0])
             if time_out < time_delta:
                 color_text = "new_warning"
                 self.map.main_canvas.itemconfig(self.dict_object[__[1][1]].red_oval, outline="red")

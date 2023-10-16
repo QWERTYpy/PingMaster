@@ -39,7 +39,7 @@ def load_ini():
                          (True, False)[config[ip_adr]['ping_status'] == 'False'],
                          float(config[ip_adr]['ping_off']),
                          ((True, False)[config.get(ip_adr, 'work_status', fallback='True') == 'False'])])
-    print(list_obj)
+    # print(list_obj)
     return list_obj
 
 
