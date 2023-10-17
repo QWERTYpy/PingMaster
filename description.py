@@ -4,9 +4,14 @@ from object import Object, ObjectDict
 import tkinter.messagebox as mb
 import re
 # Всплывающее меню при создании или редактировании информации об объекте
+
+
+def is_valid(newval):  # Проверка ввода ключа
+    return re.match("^[0-9]{0,3}[.][0-9]{0,3}$", newval) is not None
+
+
 class Descr(tk.Toplevel):
-    def __init__(self, parent, delta_x, coord, element = None, objectDict: ObjectDict = None):
-    # def __init__(self, parent, ip_adr="", descr="", work=False):
+    def __init__(self, parent, delta_x, coord, element=None, objectDict: ObjectDict = None):
         super().__init__(parent)
         self.delta_x = delta_x
         # Создаем все поля
@@ -16,32 +21,27 @@ class Descr(tk.Toplevel):
         self.label_ip = tk.Label(self, text="IP адрес:")
         self.label_ip.place(x=0, y=20)
 
-        check = (self.register(self.is_valid), "%P")
+        check = (self.register(is_valid), "%P")
         self.entry_ip = tk.Entry(self, width=20, validate="key", validatecommand=check)
-        # self.entry_ip.insert(0,'___.___')
         self.label_txt = tk.Label(self, text="Описание:")
         self.label_txt.place(x=0, y=40)
         self.txt = tk.Text(self, width=23, height=4)
-
         self.entry_ip.insert(0, "")
         self.entry_ip.place(x=70, y=20)
         self.txt.insert(1.0, "")
         self.txt.place(x=4, y=60)
-        # self.work_status = self.objectDict.dict_object[element].work_status
         # Если нужно - заполняем
         self.position_x, self.position_y = coord
         self.objectDict = objectDict
         self.element = element
-        if element:
+        if element:  #  Если передан указатель на Объект то берем данные из него
             self.entry_ip.insert(0, self.objectDict.dict_object[element].ip_adr)
-            # self.entry_ip.place(x=70, y=20)
             self.txt.insert(1.0, self.objectDict.dict_object[element].descr)
-            # self.txt.place(x=4, y=60)
             self.work_status = self.objectDict.dict_object[element].work_status
-        else:
+        else:  # Если нет, то создается новый Объект
             self.work_status = False
-            self.entry_ip.insert(0,'.')
-
+            self.entry_ip.insert(0, '.')
+        # Создаем чекбокс для контроля вкл-выкл Объекта
         self.enabled_on = "Включено"
         self.enabled_off = "Отключено"
         self.chk_enabled = tk.StringVar(value=(self.enabled_off,self.enabled_on)[self.work_status])
@@ -52,20 +52,15 @@ class Descr(tk.Toplevel):
         self.button_ok = tk.Button(self, text="Отмена", width=10, command=self.button_cansel)
         self.button_ok.place(x=100, y=160)
 
-    def is_valid(self, newval):  # Проверка ввода ключа
-        return re.match("^[0-9]{0,3}[.][0-9]{0,3}$", newval) is not None
     def button_save(self):
         # Кнопка - сохранить
         _new_ip = self.entry_ip.get()
-        # print(_new_ip, type(_new_ip))
-        # Тут должна быть регулярка для проверки корректности ввода
         for __ in self.objectDict.dict_object.keys():
-            if not re.fullmatch("^[0-9]{3}.[0-9]{1,3}$",_new_ip):
+
+            if not re.fullmatch("^[0-9]{3}.[0-9]{1,3}$", _new_ip):
                 mb.showwarning("Внимание!", "Не корректный IP адрес")
                 return
-            # print(self.objectDict.dict_object[__])
             if self.objectDict.dict_object[__].ip_adr == _new_ip:
-                # print('Дубликат')
                 if self.element and self.objectDict.dict_object[self.element].ip_adr == _new_ip:
                     continue
                 mb.showwarning("Внимание!", "Устройство с таким IP существует")

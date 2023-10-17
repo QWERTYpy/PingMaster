@@ -46,6 +46,7 @@ class MainMenu:
         for _ in self.objectDict.dict_del_object.keys():
             self.main_canvas.delete(self.objectDict.dict_del_object[_])  # Удаляем прямоугольник выделения
             self.main_canvas.delete(self.objectDict.dict_object[_].red_oval)  # Удаляем выделение
+            self.main_canvas.delete(self.objectDict.dict_object[_].grey_oval)  # Удаляем выделение
             self.main_canvas.delete(self.objectDict.dict_object[_].label)
             self.main_canvas.delete(_)  # Удаляем объект
             self.objectDict.dict_object.pop(_)  # Удаляем из словаря

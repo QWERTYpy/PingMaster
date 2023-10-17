@@ -8,7 +8,7 @@ import saveload as sl
 import history as hs
 
 
-# Создаем Объект содержажащий все данные
+# Создаем Объект содержащий все данные
 objectDict = ObjectDict()
 def on_closing():
     sl.save_ini(objectDict.dict_object)
