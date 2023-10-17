@@ -19,22 +19,23 @@ class Object:
         self.rect = ""  # Метка прямоугольника
         self.red_oval = ""  # Метка для выделения отсутствующих
         self.grey_oval = ""  # Метка для выделения отключенных
+        self.delta_x = delta_x  # Кратность
         _set_position_x = int(float(ini_block[1]))
         _set_position_y = int(float(ini_block[2]))
         self.label = self.main_canvas.create_text(_set_position_x+delta_x, _set_position_y, anchor='w', text=ini_block[0])  # Метка надписи
         self.main_canvas.tag_lower(self.label)
 
-        self.delta_x = delta_x  # Кратность
+        # Если кратность более 4, то отображаем метки
         if self.delta_x >= 4:
             self.main_canvas.tag_raise(self.label)
-        self.ping_status = ini_block[4]  # True & False
-        self.work_status = ini_block[6]  # True & False
+        self.ping_status = ini_block[4]  # True & False Отвечает ли на пинг
+        self.work_status = ini_block[6]  # True & False Отключенная
         self.ping_off = ini_block[5]  # Date and Time
         # Создание нового объекта и назначение ему обработчиков
         self.objectDict = objectDict
         self.x = round(_set_position_x / delta_x, 0)
         self.y = round(_set_position_y / delta_x, 0)
-        self.label_info = tk.Label(self.main_canvas, text="")
+        self.label_info = tk.Label(self.main_canvas, text="")  # Всплывающая метка
         # Создаем объект на канве
         self.oval = self.main_canvas.create_oval((self.x - 1) * delta_x, (self.y - 1) * delta_x, (self.x + 1) * delta_x,
                                                  (self.y + 1) * delta_x, fill='red')
@@ -124,6 +125,7 @@ class Object:
         self.main_canvas.coords(self.label, self.tmp_x+delta_x,self.tmp_y)
 
     def setcolor_RG(self):
+        # Установка цвета точек
         if self.ping_status:
             self.main_canvas.itemconfig(self.oval, fill="green")
             # Удаляем дополнительное очерчивание
@@ -140,6 +142,7 @@ class Object:
                                                                             outline='orange', width=3)
 
     def setcolor_grey(self):
+        # Очерчевание серым отключенных устройств
         if not self.work_status:
             self.main_canvas.itemconfig(self.oval, fill="grey")
             tmp_x = self.x * self.delta_x
@@ -156,6 +159,7 @@ class Object:
             self.grey_oval = ""
 
     def up_line(self):
+        # Поднять над слоями
         if self.red_oval:
             self.main_canvas.tag_raise(self.red_oval)
         if self.grey_oval:
