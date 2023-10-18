@@ -43,15 +43,7 @@ class MainMenu:
 
     def del_object(self):
         # Удаляем объекты с канвы
-        for _ in self.objectDict.dict_del_object.keys():
-            self.main_canvas.delete(self.objectDict.dict_del_object[_])  # Удаляем прямоугольник выделения
-            self.main_canvas.delete(self.objectDict.dict_object[_].red_oval)  # Удаляем выделение
-            self.main_canvas.delete(self.objectDict.dict_object[_].grey_oval)  # Удаляем выделение
-            self.main_canvas.delete(self.objectDict.dict_object[_].label)
-            self.main_canvas.delete(_)  # Удаляем объект
-            self.objectDict.dict_object.pop(_)  # Удаляем из словаря
-            break
-        self.objectDict.dict_del_object.clear()  # Очищаем словарь
+        self.objectDict.del_object(self.main_canvas)
         # Выводим служебное сообщение внизу слева
         self.info.title_left_down_text.set("Удалено")
 
@@ -68,7 +60,3 @@ class MainMenu:
             descr.geometry(f"200x200+{int(x) + 100}+{int(y)+100}")
             descr.grab_set()
             descr.wait_window()
-            # Если в форме была нажата кнопка сохранить
-            # if descr.button:
-                # self.main_canvas.itemconfigure(self.dict_object[obj].label, text=descr.ip_adr)
-                # self.info.title_left_down_text.set("Описание изменено")

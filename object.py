@@ -9,6 +9,31 @@ class ObjectDict:
         self.dict_del_object = {}  # Создаем словарь для хранения объектов на удаление
         self.reboot_ping = False  # Создаем флаг для перезагрузки пинга
 
+    def resize_map(self, delta_x):
+        # Изменяет местоположение Объектов на канве при изменении масштаба
+        for _ in self.dict_object.keys():
+            self.dict_object[_].resize(delta_x)
+
+    def object_up(self, main_canvas):
+        # Поднимаем все объекты над канвой
+        for _ in self.dict_object.keys():
+            main_canvas.tag_raise(_)
+            self.dict_object[_].up_line()
+        # Поднимаем выделение
+        for _ in self.dict_del_object.keys():
+            main_canvas.tag_raise(self.dict_del_object[_])
+
+    def del_object(self, main_canvas):
+        for _ in self.dict_del_object.keys():
+            main_canvas.delete(self.dict_del_object[_])  # Удаляем прямоугольник выделения
+            main_canvas.delete(self.dict_object[_].red_oval)  # Удаляем выделение
+            main_canvas.delete(self.dict_object[_].grey_oval)  # Удаляем выделение
+            main_canvas.delete(self.dict_object[_].label)
+            main_canvas.delete(_)  # Удаляем объект
+            self.dict_object.pop(_)  # Удаляем из словаря
+            break
+        self.dict_del_object.clear()  # Очищаем словарь
+
 
 class Object:
     def __init__(self, main_canvas, ini_block, delta_x, objectDict: ObjectDict):

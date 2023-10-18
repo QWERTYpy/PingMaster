@@ -69,15 +69,13 @@ class MainFrame(tk.Frame):
             images_resize_h = height * 2
             images_resize_w = (height * 2) * self.im_ratio
             self.delta_x *= 2
-            for _ in self.objectDict.dict_object.keys():
-                self.objectDict.dict_object[_].resize(self.delta_x)
+            self.objectDict.resize_map(self.delta_x)
         # Если надо уменьшить и текущий размер больше размера окна
         elif event.delta < 0 and width > self.main_window_w:
             self.delta_x /= 2
             images_resize_h = height / 2
             images_resize_w = height * self.im_ratio / 2
-            for _ in self.objectDict.dict_object.keys():
-                self.objectDict.dict_object[_].resize(self.delta_x)
+            self.objectDict.resize_map(self.delta_x)
         else:
             return
 
@@ -86,14 +84,10 @@ class MainFrame(tk.Frame):
         self.main_canvas.config(scrollregion=f"0 0 {self.main_images_copy.width} {self.main_images_copy.height}")
         self.main_images_pi = ImageTk.PhotoImage(self.main_images_copy)
         self.main_canvas.create_image(0, 0, anchor='nw', image=self.main_images_pi)
+
         # Поднимаем все объекты над канвой
-        for _ in self.objectDict.dict_object.keys():
-            self.main_canvas.tag_raise(_)
-            self.objectDict.dict_object[_].up_line()
-        # Поднимаем выделение
-        for _ in self.objectDict.dict_del_object.keys():
-            self.main_canvas.tag_raise(self.objectDict.dict_del_object[_])
-        # print(self.main_canvas.find_all())
+        self.objectDict.object_up(self.main_canvas)
+
 
     def right_button_click(self, event):  # , element = None):
         """
