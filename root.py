@@ -18,6 +18,7 @@ hs.folder_exist()  # Проверяем существует ли папка д�
 root = tk.Tk()
 root.protocol("WM_DELETE_WINDOW", on_closing)
 root.title("Ping Master - v.1.4.5")
+root.iconbitmap(default="icon.ico")
 root.geometry("1250x608+100+100")  # Создаем окно
 root.resizable(False, False)  # Запрещаем изменять размер окна
 root.configure(background='#ffffff')  # Устанавливаем цвет фона
